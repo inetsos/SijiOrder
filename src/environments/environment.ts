@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiBaseUrl: 'http://localhost:2020/api',
+  apiBaseUrl: 'http://sijiorder-api.orderfood.co.kr:2020/api',
 };
 
 /*

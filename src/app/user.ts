@@ -3,6 +3,7 @@ export interface User {
     username: string;
     password: string;
     name: string;
+    storeName: string;
     phone: string;
     email: string;
     createdAt: string;

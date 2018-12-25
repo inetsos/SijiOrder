@@ -1,3 +1,4 @@
+<mat-progress-bar *ngIf="loading" class="loading-overlay" [mode]="'indeterminate'"></mat-progress-bar>
 <div class="container-fluid">
   <div class="row">
     <nav class="navbar navbar-default navbar-custom">
@@ -12,26 +13,20 @@
           <a [routerLink]="['/']" class="navbar-brand">시지오더 SijiOrder</a>
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">             
-          <ul class="nav navbar-nav">
+          <ul class="nav navbar-nav">       
             <li [routerLinkActive]="['active']">
-              <a [routerLink]="['/','stores']">상점보기</a>
-            </li>          
-            <li [routerLinkActive]="['active']">
-              <a [routerLink]="['/','users']">회원보기</a>
+              <a [routerLink]="['/','users']">사용자보기</a>
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li [routerLinkActive]="['active']">
-              <a [routerLink]="['/store','login']">가맹점로그인</a>
-            </li>
-            <li [routerLinkActive]="['active']">
-              <a [routerLink]="['/store','new']">가맹점등록</a>
-            </li>
             <li *ngIf="!authService.isLoggedIn()" [routerLinkActive]="['active']">
-              <a [routerLink]="['/','login']">회원로그인</a>
+              <a [routerLink]="['/','users', 'store']">가맹점등록</a>
             </li>
             <li *ngIf="!authService.isLoggedIn()" [routerLinkActive]="['active']">
               <a [routerLink]="['/','users','new']">회원등록</a>
+            </li>            
+            <li *ngIf="!authService.isLoggedIn()" [routerLinkActive]="['active']">
+              <a [routerLink]="['/','login']">로그인</a>
             </li>
             <li *ngIf="authService.isLoggedIn()">
               <a (click)="authService.logout()">로그아웃</a>
