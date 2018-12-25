@@ -27,14 +27,14 @@
             <li [routerLinkActive]="['active']">
               <a [routerLink]="['/store','new']">가맹점등록</a>
             </li>
-            <li [routerLinkActive]="['active']">
-                <a [routerLink]="['/','login']">회원로그인</a>
+            <li *ngIf="!authService.isLoggedIn()" [routerLinkActive]="['active']">
+              <a [routerLink]="['/','login']">회원로그인</a>
             </li>
-            <li [routerLinkActive]="['active']">
-                <a [routerLink]="['/','users','new']">회원등록</a>
+            <li *ngIf="!authService.isLoggedIn()" [routerLinkActive]="['active']">
+              <a [routerLink]="['/','users','new']">회원등록</a>
             </li>
-            <li>
-              <a>로그아웃</a>
+            <li *ngIf="authService.isLoggedIn()">
+              <a (click)="authService.logout()">로그아웃</a>
             </li>
           </ul>
         </div>

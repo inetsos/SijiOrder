@@ -4,10 +4,12 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { WelcomeComponent } from './welcome/welcome.component';
+import { LoginComponent } from './login/login.component';
 import { Error404Component } from './error404/error404.component';
 
 const routes: Routes = [
   { path: '',  component: WelcomeComponent },
+  { path: 'login', component: LoginComponent },
   { path: '**', component: Error404Component }
 ];
 

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router, Event as RouterEvent, NavigationStart } from '@angular/router';
 
 import { AuthService } from './auth.service';
 
@@ -9,7 +10,15 @@ import { AuthService } from './auth.service';
 })
 export class AppComponent {
 
-  constructor( public authService: AuthService ) {
-    this.authService.refresh().catch(response => null);
+  constructor( private router: Router, public authService: AuthService ) {
+    router.events.subscribe((event: RouterEvent) => {
+      this.refreshToken(event);
+    });
+  }
+
+  private refreshToken(event: RouterEvent): void {
+    if (event instanceof NavigationStart && this.authService.isLoggedIn()) {
+      this.authService.refresh().catch(response => null);
+    }
   }
 }
