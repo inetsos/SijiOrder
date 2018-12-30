@@ -14,10 +14,18 @@ import { UserIndexComponent } from './user-index/user-index.component';
 import { UserShowComponent } from './user-show/user-show.component';
 import { UserEditComponent } from './user-edit/user-edit.component';
 import { LoginComponent } from './login/login.component';
+
+import { MenuIndexComponent } from './menu-index/menu-index.component';
+import { MenuNewComponent } from './menu-new/menu-new.component';
+import { MenuEditComponent } from './menu-edit/menu-edit.component';
+import { MenusResolve } from './menus.resolve';
+import { MenuResolve } from './menu.resolve';
+
 import { Error404Component } from './error404/error404.component';
 
 const routes: Routes = [
   { path: '',  component: WelcomeComponent },
+  { path: 'login', component: LoginComponent },
   { path: 'users/new',  component: UserNewComponent },
   { path: 'users/store',  component: UserStoreComponent },
   { path: 'users', canActivate: [AuthGuard],
@@ -45,7 +53,28 @@ const routes: Routes = [
       },
     ]
   },
-  { path: 'login', component: LoginComponent },
+  { path: 'menus', canActivate: [AuthGuard],
+    children: [
+      {
+        path: '',
+        component: MenuIndexComponent,
+        resolve: {
+          menus: MenusResolve,
+        }
+      },
+      {
+        path: 'new',
+        component: MenuNewComponent
+      },
+      {
+        path: ':menuNo/edit',
+        component: MenuEditComponent,
+        resolve: {
+          menu: MenuResolve
+        }
+      },
+    ]
+  },
   { path: '**', component: Error404Component }
 ];
 

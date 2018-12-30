@@ -58,7 +58,7 @@ export class UserEditComponent implements OnInit {
       storeName: [this.user.storeName],
       phone: [this.user.phone, [Validators.required, Validators.pattern(/^\d{3}-\d{3,4}-\d{4}$/)]],
       email: [this.user.email, [Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]],
-      newPassword: ['', [Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,16}$/)]],
+      newPassword: ['', [Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?.&]{8,}$/)]],
       confirmPassword: [''],
     }, {
       validator: this.customValidation,

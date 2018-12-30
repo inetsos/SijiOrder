@@ -1,0 +1,66 @@
+<div class="page page-menus">
+
+    <div class="buttons">
+      <a [routerLink]="['/','menus']" class="btn btn-default">목록</a>
+      <span (click)="delete()" class="btn btn-default delete">삭제</span>
+    </div>
+  
+    <form class="user-form form-horizontal" [formGroup]="form" (ngSubmit)="submit()" class="login-form form-horizontal" >
+      <div class="contentBox">
+        <h3 class="contentBoxTop">메뉴 수정</h3>
+
+        <fieldset>
+
+          <div class="form-group" [ngClass]="{'has-error': formErrors.menuNo}">
+            <label for="menuNo" class="col-sm-3 control-label">번호*</label>
+            <div class="col-sm-9">
+              <input class="form-control" type="text" formControlName="menuNo" id="menuNo">
+              <span *ngIf="formErrors.menuNo" class="help-block">{{formErrors.menuNo}}</span>
+            </div>
+          </div>
+
+          <div class="form-group" [ngClass]="{'has-error': formErrors.classify}">
+            <label for="classify" class="col-sm-3 control-label">메뉴분류*</label>
+            <div class="col-sm-9">
+              <input class="form-control" type="text" formControlName="classify" id="classify">
+              <span *ngIf="formErrors.classify" class="help-block">{{formErrors.classify}}</span>
+            </div>
+          </div>
+
+          <div class="form-group" [ngClass]="{'has-error': formErrors.name}">
+            <label for="name" class="col-sm-3 control-label">메뉴이름*</label>
+            <div class="col-sm-9">
+              <input class="form-control" type="text" formControlName="name" id="name">
+              <span *ngIf="formErrors.name" class="help-block">{{formErrors.name}}</span>
+            </div>
+          </div>
+
+          <div class="form-group" [ngClass]="{'has-error': formErrors.price}">
+              <label for="price" class="col-sm-3 control-label">가격*</label>
+              <div class="col-sm-9">
+                <input class="form-control" type="text" formControlName="price" id="price">
+                <span *ngIf="formErrors.price" class="help-block">{{formErrors.price}}</span>
+              </div>
+          </div>
+
+          <div class="form-group">
+            <label for="description" class="col-sm-3 control-label">설명</label>
+            <div class="col-sm-9">
+              <input class="form-control" type="text" formControlName="description" id="description">
+            </div>
+          </div>
+
+          <p>
+            *필수
+          </p>
+        </fieldset>
+        <div *ngIf="errorResponse?.message" class="alert alert-danger">
+          {{errorResponse?.message}}
+        </div>
+      </div>
+      <div class="buttons">
+        <button type="submit" class="btn btn-default">수정</button>
+      </div>
+    </form>
+  
+  </div>

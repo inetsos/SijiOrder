@@ -55,7 +55,7 @@ export class UserNewComponent implements OnInit {
       storeName: [''],
       phone: ['', [Validators.required, Validators.pattern(/^\d{3}-\d{3,4}-\d{4}$/)]],
       email: ['', [Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]],
-      password: ['', [Validators.required, Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/)]],
+      password: ['', [Validators.required, Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?.&]{8,}$/)]],
       confirmPassword: ['', [Validators.required]],
     }, {
       validator: this.customValidation,
