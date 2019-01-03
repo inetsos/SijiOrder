@@ -1,0 +1,15 @@
+<div class="page page-users">
+
+  <h3 class="contentBoxTop">가맹점</h3>
+  <div class="contentBox">
+    <ul>
+      <ng-container *ngIf="users == null || users.length == 0">
+        <div class="noData" colspan=100> 가맹점이 없습니다.</div>
+      </ng-container>
+      <li *ngFor="let user of users">
+        <a [routerLink]="['/','stores',user.username]">{{user.storeName}}</a>
+      </li>
+    </ul>
+  </div>
+
+</div>

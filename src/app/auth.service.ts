@@ -74,6 +74,19 @@ export class AuthService {
     }
   }
 
+  isStore(): boolean {
+    const user = this.getCurrentUser();
+    if (user) {
+      const group = user.group;
+      if (group === '가맹점') {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    return false;
+  }
+
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('currentUser');

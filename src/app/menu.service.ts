@@ -15,6 +15,29 @@ export class MenuService {
 
   constructor(private http: HttpClient, private utilService: UtilService) { }
 
+  // 사용하지 않음
+  getMenus(username: string): Promise<Menu[]> {
+    return this.http.get(`${this.apiBaseUrl}/${username}`)
+              .toPromise()
+              .then(this.utilService.checkSuccess)
+              .then(response => {
+                // console.log(response);
+                return response.data; // as Menu[];
+              })
+              .catch(this.utilService.handleApiError);
+  }
+
+  getGroups(username: string): Promise<string[]> {
+    return this.http.get(`${this.apiBaseUrl}/groups/${username}`)
+              .toPromise()
+              .then(this.utilService.checkSuccess)
+              .then(response => {
+                // console.log(response);
+                return response.data as string[];
+              })
+              .catch(this.utilService.handleApiError);
+  }
+
   index(username: string): Promise<Menu[]> {
     return this.http.get<ApiResponse>(`${this.apiBaseUrl}/${username}`)
               .toPromise()

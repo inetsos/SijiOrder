@@ -10,15 +10,21 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a [routerLink]="['/']" class="navbar-brand">시지오더 SijiOrder</a>
+          <a [routerLink]="['/']" class="navbar-brand">時至오더 SijiOrder</a>
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">             
-          <ul class="nav navbar-nav">       
+          <ul class="nav navbar-nav">    
+            <li [routerLinkActive]="['active']">
+              <a [routerLink]="['/','stores']">가맹점</a>
+            </li>   
             <li [routerLinkActive]="['active']">
               <a [routerLink]="['/','users']">사용자보기</a>
             </li>
-            <li [routerLinkActive]="['active']">
+            <li  *ngIf="authService.isLoggedIn() && authService.isStore()"  [routerLinkActive]="['active']">
               <a [routerLink]="['/','menus']">메뉴관리</a>
+            </li>
+            <li  *ngIf="authService.isLoggedIn()"  [routerLinkActive]="['active']">
+                <a [routerLink]="['/','settings']">설정</a>
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">

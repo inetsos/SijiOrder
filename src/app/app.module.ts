@@ -16,6 +16,7 @@ import { AuthService } from './auth.service';
 import { RequestInterceptorService } from './request-interceptor.service';
 import { UserService } from './user.service';
 import { MenuService } from './menu.service';
+import { SettingService } from './setting.service';
 
 import { AppComponent } from './app.component';
 import { WelcomeComponent } from './welcome/welcome.component';
@@ -30,6 +31,11 @@ import { UserShowComponent } from './user-show/user-show.component';
 import { MenuIndexComponent } from './menu-index/menu-index.component';
 import { MenuNewComponent } from './menu-new/menu-new.component';
 import { MenuEditComponent } from './menu-edit/menu-edit.component';
+import { StoresComponent } from './stores/stores.component';
+
+import { SettingsComponent } from './settings/settings.component';
+import { SettingsAddComponent } from './settings-add/settings-add.component';
+import { StoresIndexComponent } from './stores-index/stores-index.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +50,11 @@ import { MenuEditComponent } from './menu-edit/menu-edit.component';
     UserShowComponent,
     MenuIndexComponent,
     MenuNewComponent,
-    MenuEditComponent
+    MenuEditComponent,
+    StoresComponent,
+    SettingsComponent,
+    SettingsAddComponent,
+    StoresIndexComponent,
   ],
   imports: [
     BrowserModule,
@@ -65,6 +75,7 @@ import { MenuEditComponent } from './menu-edit/menu-edit.component';
     AuthService,
     UserService,
     MenuService,
+    SettingService,
     UsersResolve,
     UserResolve,
     MenusResolve,

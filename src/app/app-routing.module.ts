@@ -21,6 +21,12 @@ import { MenuEditComponent } from './menu-edit/menu-edit.component';
 import { MenusResolve } from './menus.resolve';
 import { MenuResolve } from './menu.resolve';
 
+import { StoresComponent } from './stores/stores.component';
+import { StoresIndexComponent } from './stores-index/stores-index.component';
+
+import { SettingsComponent } from './settings/settings.component';
+import { SettingsAddComponent } from './settings-add/settings-add.component';
+
 import { Error404Component } from './error404/error404.component';
 
 const routes: Routes = [
@@ -72,6 +78,30 @@ const routes: Routes = [
         resolve: {
           menu: MenuResolve
         }
+      },
+    ]
+  },
+  { path: 'stores', canActivate: [AuthGuard],
+    children: [
+      {
+        path: '',
+        component: StoresIndexComponent
+      },
+      {
+        path: ':username',
+        component: StoresComponent,
+      },
+    ]
+  },
+  { path: 'settings', canActivate: [AuthGuard],
+    children: [
+      {
+        path: '',
+        component: SettingsComponent
+      },
+      {
+        path: 'add',
+        component: SettingsAddComponent
       },
     ]
   },

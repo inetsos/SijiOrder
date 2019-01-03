@@ -1,0 +1,49 @@
+<!-- <a [routerLink]="['/stores', username]" [queryParams]="{ classify:'전체'}" role="button"><b>[전체]</b></a>&nbsp;
+<a [routerLink]="['/stores', username]" [queryParams]="{ classify:'국수류'}" role="button"><b>[국수류]</b></a>&nbsp;
+<a [routerLink]="['/stores', username]" [queryParams]="{ classify:'곁들임'}" role="button"><b>[곁들임]</b></a>&nbsp;
+<a [routerLink]="['/stores', username]" [queryParams]="{ classify:'한잔거리'}" role="button"><b>[한잔거리]</b></a>&nbsp;
+<a [routerLink]="['/stores', username]" [queryParams]="{ classify:'곱배기'}" role="button"><b>[곱배기]</b></a>&nbsp; -->
+
+<h3 class="contentBoxTop" *ngIf="user">{{user.storeName}}</h3>
+
+<span *ngFor="let classify of classifies">
+    <a [routerLink]="['/stores', username]" [queryParams]="{ classify: classify}" role="button"><b>[{{classify}}]</b></a>&nbsp;
+</span>
+
+<table class="table table-striped menus" border="0">
+  <thead>
+    <tr>
+      <th style="width:10%" class="text-center">번호</th>
+      <th style="width:20%" class="text-center">분류</th>
+      <th style="width:20%" class="text-center">메뉴이름</th>
+      <th style="width:15%" class="text-center">가격</th>
+      <th style="width:35%" class="text-center">설명</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngIf=" !menus || menus.length === 0">
+      <td class="noData" colspan="5">등록된 메뉴가 없습니다.</td>
+    </tr>
+    <ng-container *ngFor="let menu of menus">
+      <ng-container *ngIf="menu.classify === classify && classify !== '전체'">
+        <tr>
+        <td align="center">{{menu.menuNo}}</td>
+        <td align="center">{{menu.classify}}</td>
+        <td><a [routerLink]="['/', 'menus', menu.menuNo, 'edit']">{{menu.name}}</a></td>
+        <td align="right">{{menu.price | number}}</td>
+        <td>{{menu.description}}</td>
+      </tr>
+    </ng-container>
+    <ng-container *ngIf="classify === '전체'">
+        <tr>
+        <td align="center">{{menu.menuNo}}</td>
+        <td align="center">{{menu.classify}}</td>
+        <td><a [routerLink]="['/', 'menus', menu.menuNo, 'edit']">{{menu.name}}</a></td>
+        <td align="right">{{menu.price | number}}</td>
+        <td>{{menu.description}}</td>
+      </tr>
+    </ng-container>
+  </ng-container>
+  </tbody>
+</table>
+
