@@ -81,7 +81,7 @@ const routes: Routes = [
       },
     ]
   },
-  { path: 'stores', canActivate: [AuthGuard],
+  { path: 'stores',
     children: [
       {
         path: '',
@@ -111,7 +111,11 @@ const routes: Routes = [
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes,
+      {
+        onSameUrlNavigation: 'reload',
+        anchorScrolling: 'enabled'
+      })
   ],
   exports: [
     RouterModule

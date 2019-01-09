@@ -17,6 +17,7 @@ import { RequestInterceptorService } from './request-interceptor.service';
 import { UserService } from './user.service';
 import { MenuService } from './menu.service';
 import { SettingService } from './setting.service';
+import { OrdersService } from './orders.service';
 
 import { AppComponent } from './app.component';
 import { WelcomeComponent } from './welcome/welcome.component';
@@ -76,6 +77,7 @@ import { StoresIndexComponent } from './stores-index/stores-index.component';
     UserService,
     MenuService,
     SettingService,
+    OrdersService,
     UsersResolve,
     UserResolve,
     MenusResolve,

@@ -35,6 +35,16 @@ export class UserService {
               .catch(this.utilService.handleApiError);
   }
 
+  getStore(username: string): Promise<User> {
+    return this.http.get<ApiResponse>(`${this.apiBaseUrl}/store/${username}`)
+              .toPromise()
+              .then(this.utilService.checkSuccess)
+              .then(response => {
+                return response.data as User;
+              })
+              .catch(this.utilService.handleApiError);
+  }
+
   show(username: string): Promise<User> {
     return this.http.get<ApiResponse>(`${this.apiBaseUrl}/${username}`)
               .toPromise()
