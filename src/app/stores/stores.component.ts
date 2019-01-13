@@ -23,7 +23,7 @@ export class StoresComponent implements OnInit {
   navigationSubscription;
 
   username = '';
-  user: User;
+  user: User; // 가맹점이다.
   menus: Menu[];
   orderingEx = {} as OrderEx;
   ordering = {} as Order;
@@ -42,6 +42,7 @@ export class StoresComponent implements OnInit {
       // If it is a NavigationEnd event re-initalise the component
       if (e instanceof NavigationEnd) {
         this.route.params.subscribe(params => {
+          // 가맹점 사용자이름이다.
           this.username = params['username'].split('?')[0]; // 'jongbujip?classify=전체' 형태가 있다.
 
           // 가맹점의 정보는 얻는다.
@@ -49,7 +50,7 @@ export class StoresComponent implements OnInit {
           // console.log(this.user.storeName);
 
           const storename = this.username;
-          const username = this.authService.getCurrentUser().username;
+          const username = this.authService.getCurrentUser().username;  // 회원이다.
           // this.orderingEx = this.ordersService.getOrdering(storename, username).;
           this.ordersService.getOrdering(storename, username)
           .then((orderingEx) => {
@@ -60,6 +61,7 @@ export class StoresComponent implements OnInit {
 
             this.ordering._id = orderingEx._id;
             this.ordering.storename = orderingEx.storename;
+            this.ordering.shopname = orderingEx.shopname;
             this.ordering.username = orderingEx.username;
             this.ordering.tableNo = orderingEx.tableNo;
             this.ordering.orderNo = orderingEx.orderNo;
@@ -145,8 +147,9 @@ export class StoresComponent implements OnInit {
       }
     }
 
+    // console.log('1.', menu);
     // 주문중인 주문서가 있는가?
-    const storename = this.username;
+    const storename = this.username;  // 가맹점이다.
     const username = this.authService.getCurrentUser().username;
     const ordermenu: OrderMenu = {
       storename: storename,   // 가맹점
@@ -187,6 +190,7 @@ export class StoresComponent implements OnInit {
         // 저장한 주문 메뉴 정보를 받으면 주문정보를 저장한다.
         const order: Order = {
           storename: orderitem.storename,  // 가맹점
+          shopname: this.user.storeName,
           username: orderitem.username, // 회원
           tableNo: 0,
           orderNo: orderitem.orderNo,

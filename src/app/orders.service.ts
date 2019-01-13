@@ -18,6 +18,37 @@ export class OrdersService {
 
   constructor(private http: HttpClient, private utilService: UtilService) { }
 
+  getOrders(storename: string): Promise<OrderEx[]> {
+    return this.http.get<ApiResponse>(`${this.apiBaseUrl}/${storename}`)
+    .toPromise()
+    .then(this.utilService.checkSuccess)
+    .then(response => {
+      return response.data as OrderEx[];
+    })
+    .catch(this.utilService.handleApiError);
+  }
+
+  getTodayOrders(storename: string, today: string): Promise<OrderEx[]> {
+    return this.http.get<ApiResponse>(`${this.apiBaseUrl}/today/${storename}/${today}`)
+    .toPromise()
+    .then(this.utilService.checkSuccess)
+    .then(response => {
+      return response.data as OrderEx[];
+    })
+    .catch(this.utilService.handleApiError);
+  }
+
+  getMyOrders(username: string): Promise<OrderEx[]> {
+    // return this.http.get<ApiResponse>(`${this.apiBaseUrl}/myorder/${username}/${today}`)
+    return this.http.get<ApiResponse>(`${this.apiBaseUrl}/myorder/${username}`)
+    .toPromise()
+    .then(this.utilService.checkSuccess)
+    .then(response => {
+      return response.data as OrderEx[];
+    })
+    .catch(this.utilService.handleApiError);
+  }
+
   // 현재 주문중인 주문서를 가져온다.
   getOrdering(storename: string, username: string): Promise<OrderEx> {
     return this.http.get<ApiResponse>(`${this.apiBaseUrl}/ordering/${storename}/${username}`)

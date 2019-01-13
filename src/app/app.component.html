@@ -14,16 +14,17 @@
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">             
           <ul class="nav navbar-nav">    
-            <li [routerLinkActive]="['active']">
-              <a [routerLink]="['/','stores']">가맹점</a>
-            </li>   
-            <li [routerLinkActive]="['active']">
-              <a [routerLink]="['/','users']">사용자보기</a>
+             
+            <li  *ngIf="authService.isLoggedIn() && !authService.isStore()"  [routerLinkActive]="['active']">
+                <a [routerLink]="['/','myorders']">내 주문</a>
             </li>
             <li  *ngIf="authService.isLoggedIn() && authService.isStore()"  [routerLinkActive]="['active']">
               <a [routerLink]="['/','menus']">메뉴관리</a>
             </li>
-            <li  *ngIf="authService.isLoggedIn()"  [routerLinkActive]="['active']">
+            <li  *ngIf="authService.isLoggedIn() && authService.isStore()"  [routerLinkActive]="['active']">
+                <a [routerLink]="['/','orders']">주문관리</a>
+            </li>
+            <li  *ngIf="authService.isLoggedIn() && authService.isStore()"  [routerLinkActive]="['active']">
                 <a [routerLink]="['/','settings']">설정</a>
             </li>
           </ul>
@@ -31,9 +32,15 @@
             <li *ngIf="!authService.isLoggedIn()" [routerLinkActive]="['active']">
               <a [routerLink]="['/','users', 'store']">가맹점등록</a>
             </li>
+            <li *ngIf="authService.isLoggedIn() && authService.isStore()" [routerLinkActive]="['active']">
+                <a [routerLink]="['/','users', authService.getCurrentUser().username, 'edit']">가맹점정보</a>
+            </li>  
             <li *ngIf="!authService.isLoggedIn()" [routerLinkActive]="['active']">
               <a [routerLink]="['/','users','new']">회원등록</a>
             </li>            
+            <li *ngIf="authService.isLoggedIn() && !authService.isStore()" [routerLinkActive]="['active']">
+                <a [routerLink]="['/','users', authService.getCurrentUser().username, 'edit']">회원정보</a>
+            </li>
             <li *ngIf="!authService.isLoggedIn()" [routerLinkActive]="['active']">
               <a [routerLink]="['/','login']">로그인</a>
             </li>

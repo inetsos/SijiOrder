@@ -1,8 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MatProgressBarModule } from '@angular/material';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AuthGuard } from './auth.guard';
@@ -37,6 +39,8 @@ import { StoresComponent } from './stores/stores.component';
 import { SettingsComponent } from './settings/settings.component';
 import { SettingsAddComponent } from './settings-add/settings-add.component';
 import { StoresIndexComponent } from './stores-index/stores-index.component';
+import { OrdersComponent } from './orders/orders.component';
+import { MyordersComponent } from './myorders/myorders.component';
 
 @NgModule({
   declarations: [
@@ -56,14 +60,18 @@ import { StoresIndexComponent } from './stores-index/stores-index.component';
     SettingsComponent,
     SettingsAddComponent,
     StoresIndexComponent,
+    OrdersComponent,
+    MyordersComponent,
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatDatepickerModule
   ],
   providers: [
     {

@@ -21,6 +21,9 @@ import { MenuEditComponent } from './menu-edit/menu-edit.component';
 import { MenusResolve } from './menus.resolve';
 import { MenuResolve } from './menu.resolve';
 
+import { OrdersComponent } from './orders/orders.component';
+import { MyordersComponent } from './myorders/myorders.component';
+
 import { StoresComponent } from './stores/stores.component';
 import { StoresIndexComponent } from './stores-index/stores-index.component';
 
@@ -79,6 +82,22 @@ const routes: Routes = [
           menu: MenuResolve
         }
       },
+    ]
+  },
+  { path: 'orders', canActivate: [AuthGuard],
+    children: [
+      {
+        path: '',
+        component: OrdersComponent
+      }
+    ]
+  },
+  { path: 'myorders', canActivate: [AuthGuard],
+    children: [
+      {
+        path: '',
+        component: MyordersComponent
+      }
     ]
   },
   { path: 'stores',

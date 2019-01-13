@@ -11,7 +11,7 @@ a {
 .page {
     margin: 0 auto;
     font-family: 'Open Sans', sans-serif;
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .page form label {
@@ -41,19 +41,18 @@ a {
     text-align: left;
 }
 .page .contentBox {
-    font-size: 14px;
+    font-size: 12px;
     border-top: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
-    padding-top: 10px;
 }
 .page .contentBoxTop {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
     margin: 0;
     border-top: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
     background-color: #F5F5F5;
-    padding: 6px 15px;
+    padding: 10px 15px;
 }
 .page .buttons {
     margin: 7px 0;
@@ -96,5 +95,9 @@ a {
 }
 
 .page-settings {
-    max-width: 480px;
+    max-width: 640px;
+}
+
+.page-orders {
+    max-width: 640px;
 }
