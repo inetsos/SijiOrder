@@ -4,15 +4,15 @@ var vhost = require('vhost');
 var app     = express();
 var path    = require('path');
 
-app.use(express.static(path.resolve(__dirname, './dist/sijiorder')));
+app.use(express.static(path.resolve(__dirname, './dist/SijiOrder-shop')));
 app.get('*', function (req, res) {
-  var indexFile = path.resolve(__dirname,'./dist/sijiorder/index.html');
+  var indexFile = path.resolve(__dirname,'./dist/SijiOrder-shop/index.html');
   res.sendFile(indexFile);
 });
 
 var server = express();
-var hostname = 'sijiorder.orderfood.co.kr';
-var port = 2021;
+var hostname = 'SijiOrder-shop.orderfood.co.kr';
+var port = 8090;
 
 server.use(vhost(hostname, app));
 

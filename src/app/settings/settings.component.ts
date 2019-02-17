@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Setting } from '../setting';
+import { AuthService } from '../auth.service';
 import { SettingService } from '../setting.service';
 import { ApiResponse } from '../api-response';
+import { User } from '../user';
 
 @Component({
   selector: 'app-settings',
@@ -11,13 +13,79 @@ import { ApiResponse } from '../api-response';
 })
 export class SettingsComponent implements OnInit {
 
+  navigationSubscription;
+
   settings: Setting[];
   errorResponse: ApiResponse;
 
-  constructor(private settingService: SettingService, private router: Router) { }
+  user: User;
+  username = '';
+
+  constructor(private router: Router, private settingService: SettingService,
+    private authService: AuthService) {
+      this.navigationSubscription = this.router.events.subscribe((e: any) => {
+        // If it is a NavigationEnd event re-initalise the component
+        if (e instanceof NavigationEnd) {
+        }
+        this.username = this.authService.getCurrentUser().username;
+        this.settingService.index(this.username).then((settings) => this.settings = settings);
+      });
+  }
 
   ngOnInit() {
-    this.settingService.index().then((settings) => this.settings = settings);
+    this.user = this.authService.getCurrentUser();
+    this.username = this.user.username; // this.authService.getCurrentUser().username;
+    this.settingService.index(this.username).then((settings) => this.settings = settings);
+  }
+
+  createSetting() {
+
+    // type, content, username
+    const types = ['메뉴분류순서', 'SMS발신폰번호', '열렸음/닫혔음', '접수문자', '차림문자'];
+    const promises = [];
+
+    for (let i = 0; i < types.length; i++) {
+      if (this.checkSetting(types[i]) === false) {
+        const setting = {} as Setting;
+        setting.no = i + 1;
+        setting.type = types[i];
+        setting.content = '';
+        setting.username = this.username;
+
+        promises.push(this.settingService.create(setting));
+      }
+    }
+
+    Promise.all(promises)
+    .then(function(data) {
+    })
+    .catch(function(err) {
+      console.log('5.', err);
+      // this.errorResponse = err;
+    });
+    this.router.navigate(['/settings']);
+  }
+
+  checkSetting(type: string) {
+    for (let i = 0; i < this.settings.length; i++) {
+      if (this.settings[i].type === type) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  setContent(setting: Setting) {
+    if (setting.type === 'SMS발신폰번호') {
+      setting.content = setting.content.replace(/[^0-9]/g, ''); // 숫자만 추출
+    }
+    this.settingService.update(setting._id, setting)
+      .then(data => {
+        this.router.navigate(['/', 'settings']);
+      })
+      .catch(response => {
+        this.errorResponse = response;
+      });
   }
 
   deleteSetting(id: string) {

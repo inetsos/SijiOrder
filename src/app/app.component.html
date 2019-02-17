@@ -14,10 +14,9 @@
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">             
           <ul class="nav navbar-nav">    
-             
-            <li  *ngIf="authService.isLoggedIn() && !authService.isStore()"  [routerLinkActive]="['active']">
+            <!-- <li  *ngIf="authService.isLoggedIn() && !authService.isStore()"  [routerLinkActive]="['active']">
                 <a [routerLink]="['/','myorders']">내 주문</a>
-            </li>
+            </li> -->
             <li  *ngIf="authService.isLoggedIn() && authService.isStore()"  [routerLinkActive]="['active']">
               <a [routerLink]="['/','menus']">메뉴관리</a>
             </li>
@@ -35,12 +34,12 @@
             <li *ngIf="authService.isLoggedIn() && authService.isStore()" [routerLinkActive]="['active']">
                 <a [routerLink]="['/','users', authService.getCurrentUser().username, 'edit']">가맹점정보</a>
             </li>  
-            <li *ngIf="!authService.isLoggedIn()" [routerLinkActive]="['active']">
+            <!-- <li *ngIf="!authService.isLoggedIn()" [routerLinkActive]="['active']">
               <a [routerLink]="['/','users','new']">회원등록</a>
             </li>            
             <li *ngIf="authService.isLoggedIn() && !authService.isStore()" [routerLinkActive]="['active']">
                 <a [routerLink]="['/','users', authService.getCurrentUser().username, 'edit']">회원정보</a>
-            </li>
+            </li> -->
             <li *ngIf="!authService.isLoggedIn()" [routerLinkActive]="['active']">
               <a [routerLink]="['/','login']">로그인</a>
             </li>

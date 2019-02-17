@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Menu } from '../menu';
+import { AuthService } from '../auth.service';
+import { User } from '../user';
 
 @Component({
   selector: 'app-menu-index',
@@ -10,12 +12,14 @@ import { Menu } from '../menu';
 export class MenuIndexComponent implements OnInit {
 
   menus: Menu[];
+  user: User;
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, private authService: AuthService) {
     this.menus = this.route.snapshot.data['menus'];
    }
 
   ngOnInit() {
+    this.user = this.authService.getCurrentUser();
   }
 
 }

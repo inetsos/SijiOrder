@@ -1,0 +1,89 @@
+<div class="page page-menus-new">
+  <h4><b>{{user.storeName}}</b></h4>
+  
+  <form [formGroup]="myForm" novalidate (ngSubmit)="save(myForm)">
+    
+    <h5 class="contentBoxTop">메뉴 추가</h5>
+    <br/>
+    <div class="form-group row">
+      <label for="menuNo" class="col-sm-3 control-label">번호*</label>
+      <div class="col-sm-9">
+        <input class="form-control" type="text" formControlName="menuNo" id="menuNo">
+        <small *ngIf="!myForm.controls.menuNo.valid" class="text-danger">
+          메뉴번호를 입력하세요. (숫자만)
+        </small>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="classify" class="col-sm-3 control-label">메뉴분류*</label>
+      <div class="col-sm-9">
+        <input class="form-control" type="text" formControlName="classify" id="classify">
+        <small *ngIf="!myForm.controls.classify.valid" class="text-danger">
+          메뉴 분류를 입력하세요. (2~20글자)
+        </small>
+      </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="name" class="col-sm-3 control-label">메뉴이름*</label>
+        <div class="col-sm-9">
+          <input class="form-control" type="text" formControlName="name" id="name">
+          <small *ngIf="!myForm.controls.name.valid" class="text-danger">
+            메뉴 이름을 입력하세요. (2~20글자)
+          </small>
+        </div>
+      </div>
+
+    <div class="form-group row">
+      <label for="price" class="col-sm-3 control-label">가격*</label>
+      <div class="col-sm-9">
+        <input class="form-control" type="text" formControlName="price" id="price">
+        <span *ngIf="!myForm.controls.price.valid" class="text-danger">
+          <small>가격을 입력하세요. (숫자만)</small>
+        </span>
+      </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="description" class="col-sm-3 control-label">설명</label>
+        <div class="col-sm-9">
+          <input class="form-control" type="text" formControlName="description" id="description">
+        </div>
+    </div>
+
+    <div class="form-group row">
+      <div class="col-sm-3"></div>
+      <div class="col-sm-9">
+        <button (click)="addPremium()"> 프리미엄 메뉴 추가</button>
+      </div>
+    </div>
+
+    <!-- 프리미엄 메뉴 추가 -->
+    <div formArrayName="premia">
+      <div *ngFor="let premium of myForm.controls.premia.controls; let i=index">
+        <!-- <div class="form-group">
+            <label for="price" class="col-sm-3 control-label"> </label>
+            <span>프리미엄 {{i + 1}}</span> &nbsp;
+            <button *ngIf="myForm.controls.premia.controls.length > 1" (click)="removePremium(i)">삭제</button>
+        </div> -->
+        <div [formGroupName]="i">
+          <div class="form-group row">
+            <div class="col-sm-3"><button *ngIf="myForm.controls.premia.controls.length > 1" (click)="removePremium(i)">삭제</button></div>
+            <div class="col-sm-3">
+              <input class="form-control" type="text" formControlName="size" placeholder="규격" id="size">
+            </div>
+            <div class="col-sm-6">
+              <input class="form-control" type="text" formControlName="price" placeholder="가격" id="price">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <small>*필수</small>
+    <div style="float: right" >
+        <button type="submit" [disabled]="!myForm.valid">Submit</button>
+    </div>
+    
+  </form>
+</div>

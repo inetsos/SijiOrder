@@ -1,8 +1,10 @@
-<div class="page page-menus">
+<div class="page page-menus-new">
+
+    <h4 *ngIf="authService.isLoggedIn()"><b>{{user.storeName}}</b></h4>
 
   <form [formGroup]="form" (ngSubmit)="submit()" class="login-form form-horizontal" >
     <div class="contentBox">
-      <h3 class="contentBoxTop">메뉴등록</h3>
+      <h5 class="contentBoxTop">메뉴등록</h5>
 
       <fieldset>
         <div class="form-group" [ngClass]="{'has-error': formErrors.menuNo}">
@@ -37,6 +39,54 @@
           </div>
         </div>
 
+        <div class="form-group" [ngClass]="{'has-error': formErrors.price}">
+          <label for="price" class="col-sm-3 control-label">규격/가격</label>
+          <div class="col-sm-3">
+            <input class="form-control" type="text" formControlName="price" id="price">
+            <span *ngIf="formErrors.price" class="help-block">{{formErrors.price}}</span>
+          </div>
+          <div class="col-sm-6">
+            <input class="form-control" type="text" formControlName="price" id="price">
+            <span *ngIf="formErrors.price" class="help-block">{{formErrors.price}}</span>
+          </div>
+        </div>
+
+        <div class="form-group" [ngClass]="{'has-error': formErrors.price}">
+          <label for="price" class="col-sm-3 control-label"> </label>
+          <div class="col-sm-3">
+            <input class="form-control" type="text" formControlName="price" id="price">
+            <span *ngIf="formErrors.price" class="help-block">{{formErrors.price}}</span>
+          </div>
+          <div class="col-sm-6">
+            <input class="form-control" type="text" formControlName="price" id="price">
+            <span *ngIf="formErrors.price" class="help-block">{{formErrors.price}}</span>
+          </div>
+        </div>
+
+        <div class="form-group" [ngClass]="{'has-error': formErrors.price}">
+          <label for="price" class="col-sm-3 control-label"> </label>
+          <div class="col-sm-3">
+            <input class="form-control" type="text" formControlName="price" id="price">
+            <span *ngIf="formErrors.price" class="help-block">{{formErrors.price}}</span>
+          </div>
+          <div class="col-sm-6">
+            <input class="form-control" type="text" formControlName="price" id="price">
+            <span *ngIf="formErrors.price" class="help-block">{{formErrors.price}}</span>
+          </div>
+        </div>
+
+        <div class="form-group" [ngClass]="{'has-error': formErrors.price}">
+          <label for="price" class="col-sm-3 control-label"> </label>
+          <div class="col-sm-3">
+            <input class="form-control" type="text" formControlName="price" id="price">
+            <span *ngIf="formErrors.price" class="help-block">{{formErrors.price}}</span>
+          </div>
+          <div class="col-sm-6">
+            <input class="form-control" type="text" formControlName="price" id="price">
+            <span *ngIf="formErrors.price" class="help-block">{{formErrors.price}}</span>
+          </div>
+        </div>
+
         <div class="form-group">
             <label for="description" class="col-sm-3 control-label">설명</label>
             <div class="col-sm-9">
@@ -53,7 +103,7 @@
 
       </fieldset>
     </div>
-    <div class="buttons">
+    <div align="right" class="buttons">
       <button type="submit" class="btn btn-default">등록</button>
     </div>
   </form>

@@ -7,6 +7,7 @@ import { ApiResponse } from '../api-response';
 import { UtilService } from '../util.service';
 import { MenuService } from '../menu.service';
 import { AuthService } from '../auth.service';
+import { User } from '../user';
 
 @Component({
   selector: 'app-menu-new',
@@ -15,6 +16,7 @@ import { AuthService } from '../auth.service';
 })
 export class MenuNewComponent implements OnInit {
 
+  user: User;
   errorResponse: ApiResponse;
   form: FormGroup;
 
@@ -65,6 +67,7 @@ export class MenuNewComponent implements OnInit {
    }
 
   ngOnInit() {
+    this.user = this.authService.getCurrentUser();
   }
 
   submit() {

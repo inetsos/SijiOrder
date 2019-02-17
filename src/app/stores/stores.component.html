@@ -2,13 +2,35 @@
   
   <h4 *ngIf="user"><b>{{user.storeName}}</b></h4>
 
-  <div align="right">
-    <span *ngFor="let classify of classifies">
-        <a [routerLink]="['/stores', username]" [queryParams]="{ classify: classify}" role="button"><b>{{classify}}</b></a>&nbsp;
-    </span>
-    &nbsp;
+  <div style="margin-bottom: 6px" *ngIf="authService.isLoggedIn() === false"> 
+    비회원주문 <input type="checkbox" [(ngModel)]="nonmember" />
+  </div>
+  <ng-container *ngIf="nonmember === true">
+    <table class="table">
+      <tr>
+        <td>전화번호: &nbsp;<input style="width: 140px;" [(ngModel)]="phoneno" type="text"/> (숫자만)</td>
+      </tr>
+      <tr>
+        <td>비밀번호: &nbsp;<input style="width: 140px; " [(ngModel)]="password" type="password"/></td>
+      </tr>
+      <tr>
+        <td>
+          기억하기 <input type="checkbox" [(ngModel)]="memory" (ngModelChange)="storeMember() "/>&nbsp;&nbsp;
+          * 전화번호로 주문접수문자를 전송합니다.
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+      </tr>
+    </table>
+  </ng-container>
+  
+  <div align="right" style="margin-bottom: 10px">
     <a [routerLink]="['/stores', username]" [queryParams]="{ classify: classify}" role="button" class="btn btn-primary btn-sm" fragment="ordersheet">주문서</a>
   </div>
+  <span *ngFor="let classify of classifies">
+      <a [routerLink]="['/stores', username]" [queryParams]="{ classify: classify}" role="button"><b>{{classify}}</b></a>&nbsp;
+  </span>
 
   <table class="table table-striped menus" border="0">
     <thead>
@@ -118,7 +140,7 @@
   </div>
   <div *ngIf="orderingEx !== null" style="width: 100%; text-align: right" >
     <hr>
-    테이블: <input style="width: 48px; text-align: center" [(ngModel)]="ordering.tableNo" type="text"/> &nbsp;&nbsp;&nbsp;&nbsp;
+    테이블: <input style="width: 48px; text-align: center" [(ngModel)]="ordering.tableNo" type="text"/> (0:예약)&nbsp;&nbsp;&nbsp;&nbsp;
     <button class="btn btn-primary btn-sm" (click)="submitOrder(ordering)">주문하기</button>&nbsp;
     <button class="btn btn-default btn-sm" (click)="cancelOrder(ordering)">주문취소</button>
   </div>

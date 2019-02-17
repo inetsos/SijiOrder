@@ -20,6 +20,7 @@ import { UserService } from './user.service';
 import { MenuService } from './menu.service';
 import { SettingService } from './setting.service';
 import { OrdersService } from './orders.service';
+import { FcmsService } from './fcms.service';
 
 import { AppComponent } from './app.component';
 import { WelcomeComponent } from './welcome/welcome.component';
@@ -41,6 +42,7 @@ import { SettingsAddComponent } from './settings-add/settings-add.component';
 import { StoresIndexComponent } from './stores-index/stores-index.component';
 import { OrdersComponent } from './orders/orders.component';
 import { MyordersComponent } from './myorders/myorders.component';
+import { MenuAddComponent } from './menu-add/menu-add.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +64,7 @@ import { MyordersComponent } from './myorders/myorders.component';
     StoresIndexComponent,
     OrdersComponent,
     MyordersComponent,
+    MenuAddComponent,
   ],
   imports: [
     BrowserModule,
@@ -86,6 +89,7 @@ import { MyordersComponent } from './myorders/myorders.component';
     MenuService,
     SettingService,
     OrdersService,
+    FcmsService,
     UsersResolve,
     UserResolve,
     MenusResolve,

@@ -8,7 +8,6 @@ import { OrderEx } from './orderEx';
 import { Order } from './order';
 import { OrderMenu } from './ordermenu';
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -52,6 +51,17 @@ export class OrdersService {
   // 현재 주문중인 주문서를 가져온다.
   getOrdering(storename: string, username: string): Promise<OrderEx> {
     return this.http.get<ApiResponse>(`${this.apiBaseUrl}/ordering/${storename}/${username}`)
+    .toPromise()
+    .then(this.utilService.checkSuccess)
+    .then(response => {
+      // console.log(response);
+      return response.data as OrderEx;
+    })
+    .catch(this.utilService.handleApiError);
+  }
+
+  getNonmemberOrdering(storename: string, phoneno: string): Promise<OrderEx> {
+    return this.http.get<ApiResponse>(`${this.apiBaseUrl}/nonmember/${storename}/${phoneno}`)
     .toPromise()
     .then(this.utilService.checkSuccess)
     .then(response => {

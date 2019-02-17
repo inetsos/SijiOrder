@@ -17,6 +17,7 @@ import { LoginComponent } from './login/login.component';
 
 import { MenuIndexComponent } from './menu-index/menu-index.component';
 import { MenuNewComponent } from './menu-new/menu-new.component';
+import { MenuAddComponent } from './menu-add/menu-add.component';
 import { MenuEditComponent } from './menu-edit/menu-edit.component';
 import { MenusResolve } from './menus.resolve';
 import { MenuResolve } from './menu.resolve';
@@ -74,6 +75,10 @@ const routes: Routes = [
       {
         path: 'new',
         component: MenuNewComponent
+      },
+      {
+        path: 'add',
+        component: MenuAddComponent
       },
       {
         path: ':menuNo/edit',
