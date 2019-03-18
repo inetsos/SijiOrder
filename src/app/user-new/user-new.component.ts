@@ -7,6 +7,8 @@ import { ApiResponse } from '../api-response';
 import { UtilService } from '../util.service';
 import { UserService } from '../user.service';
 
+import { Address } from '../jusos';
+
 @Component({
   selector: 'app-user-new',
   templateUrl: './user-new.component.html',
@@ -16,6 +18,10 @@ export class UserNewComponent implements OnInit {
 
   errorResponse: ApiResponse;
   form: FormGroup;
+
+  addresses: Array<Address> = new Array<Address>();
+
+  keyword = '';
 
   formErrors = {
     'username': '',
@@ -27,7 +33,7 @@ export class UserNewComponent implements OnInit {
   };
   formErrorMessages = {
     'username': {
-      'required': '사용자 이름을 입력하세요.',
+      'required': '회원아이디를 입력하세요.',
       'pattern': '8~16자의 영문 숫자입니다.',
     },
     'phone': {
@@ -49,12 +55,14 @@ export class UserNewComponent implements OnInit {
 
   buildForm(): void {
     this.form = this.formBuilder.group({
-      group: ['사용자'],
+      group: ['회원'],
       username: ['', [Validators.required, Validators.pattern(/^.{8,16}$/)]],
       name: [''],
       storeName: [''],
       phone: ['', [Validators.required, Validators.pattern(/^\d{3}-\d{3,4}-\d{4}$/)]],
       email: ['', [Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]],
+      roadAddr: [''],
+      jibunAddr: [''],
       password: ['', [Validators.required, Validators.pattern(/^(?=.*?[A-Za-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-.]).{8,}$/)]],
       confirmPassword: ['', [Validators.required]],
     }, {
@@ -80,6 +88,10 @@ export class UserNewComponent implements OnInit {
      }
 
   ngOnInit() {
+    // this.userService.getAddress('사월동 500').
+    //   then((juso) => {
+    //     console.log(juso);
+    //   });
   }
 
   submit() {
@@ -97,4 +109,25 @@ export class UserNewComponent implements OnInit {
     }
   }
 
+  queryAddr() {
+    if (this.keyword === '') {
+      return;
+    }
+    this.addresses = [];
+    this.userService.getAddress(this.keyword)
+      .then((juso) => {
+        console.log(juso.results.juso.length, Number(juso.results.common.totalCount));
+        // 100개까지만 돌려준다. totalCount까지 돌려주는 것이 아니다.
+          for ( let i = 0 ; i < juso.results.juso.length /*Number(juso.results.common.totalCount)*/ ; i++) {
+            const addr = {} as Address;
+            addr.roadAddr = juso.results.juso[i].roadAddr;
+            addr.jibunAddr = juso.results.juso[i].jibunAddr;
+
+            this.addresses.push(addr);
+          }
+
+        console.log(this.addresses);
+
+    });
+  }
 }

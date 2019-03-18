@@ -6,5 +6,10 @@ export interface Menu {
     price: number;
     description: string;
     username: string;
+    premia: Premium[];
 }
 
+export interface Premium {
+    size: string;
+    premium_price: number;
+}

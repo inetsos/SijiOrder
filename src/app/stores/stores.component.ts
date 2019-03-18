@@ -5,9 +5,7 @@ import { MenuService } from '../menu.service';
 import { UserService } from '../user.service';
 import { SettingService } from '../setting.service';
 import { Menu } from '../menu';
-import { OrderMenu } from '../ordermenu';
-import { OrderEx } from '../orderEx';
-import { Order } from '../order';
+import { Order, OrderMenu } from '../order';
 import { Setting } from '../setting';
 import { User } from '../user';
 import { AuthService } from '../auth.service';
@@ -25,13 +23,21 @@ export class StoresComponent implements OnInit {
   username = '';
   user: User; // 가맹점이다.
   menus: Menu[];
-  orderingEx = {} as OrderEx;
   ordering = {} as Order;
   amounts: number[];
   settings: Setting[];
   classifies: string[];
     // promiseMenus: Promise<Menu[]>;
   classify = '전체';
+
+  nonmember = false;
+  mobileOrder = '';
+  phoneno = '';
+  password = '';
+
+  today = new Date();
+  todayOrders: Order[];
+  isshow = false;
 
   constructor(private route: ActivatedRoute, private menuService: MenuService, private userService: UserService,
     private settingService: SettingService, private authService: AuthService, private router: Router,
@@ -42,51 +48,57 @@ export class StoresComponent implements OnInit {
       // If it is a NavigationEnd event re-initalise the component
       if (e instanceof NavigationEnd) {
         this.route.params.subscribe(params => {
-          // 가맹점 사용자이름이다.
+          // 가맹점 아이디이다.
           this.username = params['username'].split('?')[0]; // 'jongbujip?classify=전체' 형태가 있다.
 
           // 가맹점의 정보는 얻는다.
           this.userService.getStore(this.username).then(user => this.user = user);
           // console.log(this.user.storeName);
+         const storename = this.username;
 
-          const storename = this.username;
-          const username = this.authService.getCurrentUser().username;  // 회원이다.
-          // this.orderingEx = this.ordersService.getOrdering(storename, username).;
-          this.ordersService.getOrdering(storename, username)
-          .then((orderingEx) => {
-            this.orderingEx = {} as OrderEx;
-            this.orderingEx = orderingEx;
+          if (this.authService.isLoggedIn()) {
 
-            this.ordering = {} as Order;
+            const username = this.authService.getCurrentUser().username;  // 회원이다.
+            // this.orderingEx = this.ordersService.getOrdering(storename, username).;
+            this.ordersService.getOrdering(storename, username)
+            .then((ordering) => {
+              this.ordering = ordering;
+              if (!this.ordering.ordermenu) {
+                this.ordering.ordermenu = [];
+              }
+            })
+            .catch((response) => {
+              this.ordering = {} as Order;
+              this.ordering.ordermenu = [];
+            });
+          } else {
+            // 비회원 주문
+            this.phoneno = sessionStorage.getItem('phoneno');
+            this.password = sessionStorage.getItem('password');
 
-            this.ordering._id = orderingEx._id;
-            this.ordering.storename = orderingEx.storename;
-            this.ordering.shopname = orderingEx.shopname;
-            this.ordering.username = orderingEx.username;
-            this.ordering.tableNo = orderingEx.tableNo;
-            this.ordering.orderNo = orderingEx.orderNo;
-            this.ordering.status = orderingEx.status;
-            this.ordering.createdAt = orderingEx.createdAt;
-            this.ordering.orderedAt = orderingEx.orderedAt;
-            this.ordering.confirmedAt = orderingEx.confirmedAt;
-            // console.log('2.', this.ordering);
-            this.ordering.ordermenu = [];
-            for (let i = 0 ; i < orderingEx.ordermenu.length; i++) {
-              this.ordering.ordermenu[i] = orderingEx.ordermenu[i]._id;
-            }
-
-            // console.log('3.', this.ordering);
-          })
-          .catch((response) => {
-            this.orderingEx = null;
-            this.ordering = null;
-          });
+            // this.orderingEx = this.ordersService.getOrdering(storename, username).;
+            this.ordersService.getNonmemberOrdering(storename, this.phoneno)
+            .then((ordering) => {
+              this.ordering = ordering;
+              if (!this.ordering.ordermenu) {
+                this.ordering.ordermenu = [];
+              }
+            })
+            .catch((response) => {
+              this.ordering = {} as Order;
+              this.ordering.ordermenu = [];
+            });
+          }
         });
       }
     });
   }
 
   ngOnInit() {
+    this.settingService.getSetting(this.username, '모바일주문').then((settings) => {
+      this.mobileOrder = settings[0].content;
+    });
+
     this.route.queryParams
       .subscribe(params => {
         if (params.classify) {
@@ -107,13 +119,57 @@ export class StoresComponent implements OnInit {
             this.classify = this.classifies[0];
           }
         });
-
-        // this.promiseMenus = this.menuService.getMenus(this.username);
       });
+
+      if (this.authService.isLoggedIn()) {
+
+        const username = this.authService.getCurrentUser().username;  // 회원이다.
+        // this.orderingEx = this.ordersService.getOrdering(storename, username).;
+        this.ordersService.getOrdering(this.username, username)
+        .then((ordering) => {
+          this.ordering = ordering;
+          if (!this.ordering.ordermenu) {
+            this.ordering.ordermenu = [];
+          }
+        })
+        .catch((response) => {
+          this.ordering = {} as Order;
+          this.ordering.ordermenu = [];
+        });
+      } else {
+        // 비회원 주문
+        this.phoneno = sessionStorage.getItem('phoneno');
+        this.password = sessionStorage.getItem('password');
+        if (!this.phoneno) {
+          this.phoneno = '';
+          this.ordering = {} as Order;
+          this.ordering.ordermenu = [];
+          return;
+        }
+
+        // this.orderingEx = this.ordersService.getOrdering(storename, username).;
+        this.ordersService.getNonmemberOrdering(this.username, this.phoneno)
+        .then((ordering) => {
+          this.ordering = ordering;
+          if (!this.ordering.ordermenu) {
+            this.ordering.ordermenu = [];
+          }
+        })
+        .catch((response) => {
+          this.ordering = {} as Order;
+          this.ordering.ordermenu = [];
+        });
+      }
   }
 
   trackByIndex(index: number, obj: any): any {
     return index;
+  }
+
+  isValidPhoneno(phoneno: string) {
+    const phoneRegExp = /^\d{3}\d{3,4}\d{4}$/;
+    const digits = phoneno.replace(/\D/g, '');
+    return phoneRegExp.test(digits);
   }
 
   // 메뉴를 선택하면 먼저 로그인 상태를 확인하고
@@ -122,57 +178,183 @@ export class StoresComponent implements OnInit {
   // 상태가 주문 완료되었다면 새로운 주문서를 만들어야 한다.
   // 주문번호는 마지막 주문번호 + 1
 
-  orderMenu(menu: Menu) {
+  orderMenu(menu: Menu, size: string) {
+
+    this.isshow = false;
 
     // 로그인여부를 확인한다.
-    if (this.authService.isLoggedIn() === false ) {
-      alert('먼저 로그인 해야 합니다.');
-      this.router.navigate(['login'], {
-        queryParams: { redirectTo: '/stores/' + this.username + '?classify=' + this.classify }
-      });
-      return false;
+    if (this.authService.isLoggedIn() === false && this.nonmember === false ) {
+      const answer = confirm('로그인 하시겠습니까?\n비회원 주문을 하시려면 "취소" 하신 후 비회원주문을 체크하세요.');
+      if (answer) {
+        this.router.navigate(['login'], {
+          queryParams: { redirectTo: '/stores/' + this.username + '?classify=' + this.classify }
+        });
+        return false;
+      }
+      return;
     }
 
-    // 선택한 메뉴가 이미 선택된 메뉴라면 수량과 금액만 변경하고 저장한다.
-    if (this.orderingEx) {
+    if (this.nonmember === true) {
+      // 비회원 주문
+      // 고객이 메뉴의 '주문'버튼을 눌렀다.
+      // 1. 전화번호와 비밀번호의 입력을 확인한다.
+      // 2. 신규 주문서를 만들어 저장한다.
+      // 3. 계속 주문을 받는다.
+      if (this.phoneno === '' || this.password === '') {
+        alert('전화번호와 비밀번호을 입력하세요.');
+        return;
+      }
 
-      for (let i = 0; i < this.orderingEx.ordermenu.length ; i++ ) {
-        if (this.orderingEx.ordermenu[i].menuNo === menu.menuNo) {
-          this.orderingEx.ordermenu[i].number++;
-          this.orderingEx.ordermenu[i].sum = this.orderingEx.ordermenu[i].number * this.orderingEx.ordermenu[i].price;
-          this.ordersService.updateOrderMenu(this.orderingEx.ordermenu[i]._id,
-            this.orderingEx.ordermenu[i]).catch(response => null);
-          return;
+      if ( this.isValidPhoneno(this.phoneno) === false) {
+        alert('전화번호에 숫자만 정확하게 입력하세요.');
+        return;
+      }
+
+      sessionStorage.setItem('phoneno', this.phoneno);
+      sessionStorage.setItem('password', this.password);
+
+      let menu_name = menu.name;
+      let menu_price = menu.price;
+      if ( size !== '') {
+        menu_name = menu_name + ' ' + size;
+        for ( let i = 0 ; i < menu.premia.length; i++) {
+          if (menu.premia[i].size === size) {
+            menu_price = menu.premia[i].premium_price;
+          }
         }
       }
-    }
 
-    // console.log('1.', menu);
-    // 주문중인 주문서가 있는가?
-    const storename = this.username;  // 가맹점이다.
-    const username = this.authService.getCurrentUser().username;
-    const ordermenu: OrderMenu = {
-      storename: storename,   // 가맹점
-      username: username,         // 회원
-      orderNo: 1,
-      menuNo: menu.menuNo,
-      classify: menu.classify,
-      name: menu.name,
-      price: menu.price,
-      number: 1,
-      sum: menu.price
-    };
+      // 같은 메뉴를 계속 선택한 경우 메뉴의 수량을 증가시킨다.
+      if (this.ordering.ordermenu.length > 0) {
+        for (let i = 0; i < this.ordering.ordermenu.length ; i++ ) {
+          if (this.ordering.ordermenu[i].name === menu_name) {
+            this.ordering.ordermenu[i].number++;
+            this.ordering.ordermenu[i].sum = this.ordering.ordermenu[i].number * this.ordering.ordermenu[i].price;
+            this.ordersService.updateOrder(this.ordering._id, this.ordering)
+              .then((saveordering) => {
+                this.ordering = saveordering;
+                if ( !this.ordering.ordermenu ) {
+                  this.ordering.ordermenu = [];
+                }
+                this.router.navigate(['/stores', this.username], { queryParams: { classify: this.classify, nonmember: this.phoneno } });
+              })
+              .catch(response => null);
+            return;
+          }
+        }
+      }
 
-    // this.ordersService.getOrdering(storename, username)
-    if (this.ordering) {
-      // 주문중인 주문서를 가져왔다.
-      // 주문 메뉴를 저장하고, id를 얻어 주문서에 추가한 후 주문서를 수정한다.
-      // 먼저 주문 메뉴를 저장하고
-      this.ordersService.saveOrderMenu(ordermenu)
-      .then((orderitem) => {
-        this.ordering.ordermenu.push(orderitem._id);
+      this.phoneno = this.phoneno.replace(/[^0-9]/g, ''); // 숫자만 추출
+
+      const ordermenu: OrderMenu = {
+        orderNo: 1,
+        menuNo: menu.menuNo,
+        classify: menu.classify,
+        name: menu_name,
+        price: menu_price,
+        number: 1,
+        sum: menu_price
+      };
+
+      if (this.ordering.ordermenu.length > 0) {
+        // 주문중이다.
+        this.ordering.ordermenu.push(ordermenu);
         this.ordersService.updateOrder(this.ordering._id, this.ordering)
         .then((saveordering) => {
+          this.ordering = saveordering;
+          if ( !this.ordering.ordermenu ) {
+            this.ordering.ordermenu = [];
+          }
+          // alert('주문서에 저장하였습니다.');
+          this.router.navigate(['/stores', this.username], { queryParams: { classify: this.classify, nonmember: this.phoneno } });
+          // return;
+        })
+        .catch((response) => {
+          alert('추가 주문 저장 오류: ' + response.message);
+        });
+      } else {
+        // 주문중이 아니다. 주문서를 만들어야 한다. (비회원 주문)
+        const order: Order = {
+          storename: this.user.username,  // 가맹점
+          shopname: this.user.storeName,
+          username: '', // 회원
+          phoneno: this.phoneno,
+          password: this.password,
+          type: 1,
+          tableNo: 0,
+          orderNo: 1,
+          status: '선택',
+          ordermenu: []
+        };
+        order.ordermenu.push(ordermenu);
+
+        this.ordersService.saveOrder(order)
+          .then((saveordering) => {
+            this.ordering = saveordering;
+            if ( !this.ordering.ordermenu ) {
+              this.ordering.ordermenu = [];
+            }
+            // 정상적으로 주문이 저장되었다면 페이지를 다시 읽는다.
+            this.router.navigate(['/stores', this.username], { queryParams: { classify: this.classify, nonmember: this.phoneno } });
+            return;
+          })
+          .catch((response) => {
+            // 주문 저장을 실패하면 현재 페이지에 남는다.
+            alert('주문 저장 오류: ' + response.message);
+          });
+      }
+
+    } else {
+      // 회원 주문
+      let menu_name = menu.name;
+      let menu_price = menu.price;
+      if ( size !== '') {
+        menu_name = menu_name + ' ' + size;
+        for ( let i = 0 ; i < menu.premia.length; i++) {
+          if (menu.premia[i].size === size) {
+            menu_price = menu.premia[i].premium_price;
+          }
+        }
+      }
+      // 선택한 메뉴가 이미 선택된 메뉴라면 수량과 금액만 변경하고 저장한다.
+      if (this.ordering.ordermenu.length > 0) {
+        for (let i = 0; i < this.ordering.ordermenu.length ; i++ ) {
+          if (this.ordering.ordermenu[i].name === menu_name) {
+            this.ordering.ordermenu[i].number++;
+            this.ordering.ordermenu[i].sum = this.ordering.ordermenu[i].number * this.ordering.ordermenu[i].price;
+            this.ordersService.updateOrder(this.ordering._id, this.ordering)
+              .then((saveordering) => {
+                this.ordering = saveordering;
+                if ( !this.ordering.ordermenu ) {
+                  this.ordering.ordermenu = [];
+                }
+                this.router.navigate(['/stores', this.username], { queryParams: { classify: this.classify } });
+              })
+              .catch(response => null);
+            return;
+          }
+        }
+      }
+
+      const ordermenu: OrderMenu = {
+        orderNo: 1,
+        menuNo: menu.menuNo,
+        classify: menu.classify,
+        name: menu_name,
+        price: menu_price,
+        number: 1,
+        sum: menu_price
+      };
+
+      if (this.ordering.ordermenu.length > 0) {
+        // 주문중인 주문서를 가져왔다.
+        this.ordering.ordermenu.push(ordermenu);
+        this.ordersService.updateOrder(this.ordering._id, this.ordering)
+        .then((saveordering) => {
+          this.ordering = saveordering;
+          if ( !this.ordering.ordermenu ) {
+            this.ordering.ordermenu = [];
+          }
           // alert('주문서에 저장하였습니다.');
           this.router.navigate(['/stores', this.username], { queryParams: { classify: this.classify } });
           // return;
@@ -180,73 +362,78 @@ export class StoresComponent implements OnInit {
         .catch((response) => {
           alert('추가 주문 저장 오류: ' + response.message);
         });
-      });
-  } else {
-      // 주문중이 아니다. 주문서를 만들어야 한다.
-      // 주문메뉴없이 주문번호 0으로 주문서를 먼저 만든 후 주문서를 다시 가져온다.
-      // 먼저 주문 메뉴를 저장하고
-      this.ordersService.saveOrderMenu(ordermenu)
-      .then((orderitem) => {
-        // 저장한 주문 메뉴 정보를 받으면 주문정보를 저장한다.
+
+      } else {
+        // 주문중이 아니다. 주문서를 만들어야 한다.
         const order: Order = {
-          storename: orderitem.storename,  // 가맹점
+          storename: this.user.username,  // 가맹점
           shopname: this.user.storeName,
-          username: orderitem.username, // 회원
+          username: this.authService.getCurrentUser().username,  // 회원이다.
+          phoneno: '',
+          password: '',
+          type: 0,
           tableNo: 0,
-          orderNo: orderitem.orderNo,
+          orderNo: 1,
           status: '선택',
-          ordermenu: [orderitem._id]
+          ordermenu: []
         };
+        order.ordermenu.push(ordermenu);
+
         this.ordersService.saveOrder(order)
-        .then((savedorder) => {
-          // 정상적으로 주문이 저장되었다면 페이지를 다시 읽는다.
-          this.router.navigate(['/stores', this.username], { queryParams: { classify: this.classify } });
-          return;
-        })
-        .catch((response) => {
-          // 주문 저장을 실패하면 현재 페이지에 남는다.
-          alert('주문 저장 오류: ' + response.message);
-        });
-      })
-      .catch((response) => {
-        // 주문메뉴 저장을 실패하였다. 우짜지?
-        // console.log(response);
-        alert('주문메뉴 저장 오류: ' + response.message);
-      });
+          .then((saveordering) => {
+            this.ordering = saveordering;
+            if ( !this.ordering.ordermenu ) {
+              this.ordering.ordermenu = [];
+            }
+            // 정상적으로 주문이 저장되었다면 페이지를 다시 읽는다.
+            this.router.navigate(['/stores', this.username], { queryParams: { classify: this.classify } });
+            return;
+          })
+          .catch((response) => {
+            // 주문 저장을 실패하면 현재 페이지에 남는다.
+            alert('주문 저장 오류: ' + response.message);
+          });
+      }
     }
   }
 
   addNumber(index: number) {
+    this.isshow = false;
     // 주문 수량을 증가시킨다.
     // ordermenu.number++;
     // ordermenu.sum = ordermenu.price * ordermenu.number;
     // 주문메뉴 저장 데이터를 갱신한다.
-    this.orderingEx.ordermenu[index].number++;
-    this.orderingEx.ordermenu[index].sum = this.orderingEx.ordermenu[index].price * this.orderingEx.ordermenu[index].number;
+    this.ordering.ordermenu[index].number++;
+    this.ordering.ordermenu[index].sum = this.ordering.ordermenu[index].price * this.ordering.ordermenu[index].number;
 
-    this.ordersService.updateOrderMenu(this.orderingEx.ordermenu[index]._id,
-      this.orderingEx.ordermenu[index]).catch(response => null);
+    this.ordersService.updateOrder(this.ordering._id, this.ordering)
+      .then((saveordering) => {
+        this.ordering = saveordering;
+        if ( !this.ordering.ordermenu ) {
+          this.ordering.ordermenu = [];
+        }
+        this.router.navigate(['/stores', this.username], { queryParams: { classify: this.classify } });
+      })
+      .catch(response => null);
   }
 
   subsNumber(index: number) {
-
-    if ( this.orderingEx.ordermenu[index].number === 0) {
+    this.isshow = false;
+    if ( this.ordering.ordermenu[index].number === 0) {
       return;
     }
 
-    if ( this.orderingEx.ordermenu[index].number - 1 === 0) {
+    if ( this.ordering.ordermenu[index].number - 1 === 0) {
       const answer = confirm('주문메뉴 수량이 "0"이면 삭제합니다. 계속할까요?');
       if (answer) {
         // 수량이 '0'이면 삭제한다.
-        this.ordersService.deleteOrderMenu(this.orderingEx.ordermenu[index]._id)
-        .then((deletemenu) => {
-          // order에서 ordermenu정보를 수정해야 한다.
-          const idx = this.ordering.ordermenu.indexOf(deletemenu._id);
-          if (idx > -1) {
-            this.ordering.ordermenu.splice(idx, 1);
-          }
-          this.ordersService.updateOrder(this.ordering._id, this.ordering)
+        this.ordering.ordermenu.splice(index, 1);
+        this.ordersService.updateOrder(this.ordering._id, this.ordering)
           .then((saveordering) => {
+            this.ordering = saveordering;
+            if ( !this.ordering.ordermenu ) {
+              this.ordering.ordermenu = [];
+            }
             // alert('주문서에 저장하였습니다.');
             this.router.navigate(['/stores', this.username], { queryParams: { classify: this.classify } });
             // return;
@@ -254,21 +441,25 @@ export class StoresComponent implements OnInit {
           .catch((response) => {
             alert('추가 주문 저장 오류: ' + response.message);
           });
-        })
-        .catch(response => null);
-      }
+        }
     } else {
       // 주문메뉴 수량 감소 후 저장 데이터를 갱신한다.
-      this.orderingEx.ordermenu[index].number--;
-      this.orderingEx.ordermenu[index].sum = this.orderingEx.ordermenu[index].price * this.orderingEx.ordermenu[index].number;
+      this.ordering.ordermenu[index].number--;
+      this.ordering.ordermenu[index].sum = this.ordering.ordermenu[index].price * this.ordering.ordermenu[index].number;
 
-      this.ordersService.updateOrderMenu(this.orderingEx.ordermenu[index]._id,
-      this.orderingEx.ordermenu[index]).catch(response => null);
+      this.ordersService.updateOrder(this.ordering._id, this.ordering)
+        .then((saveordering) => {
+          this.ordering = saveordering;
+          if ( !this.ordering.ordermenu ) {
+            this.ordering.ordermenu = [];
+          }
+          this.router.navigate(['/stores', this.username], { queryParams: { classify: this.classify } });
+        })
+        .catch(response => null);
     }
   }
 
-  getTotal(order: OrderEx) {
-
+  getTotal(order: Order) {
     if (!order.ordermenu) {
       return 0;
     }
@@ -281,10 +472,25 @@ export class StoresComponent implements OnInit {
   }
 
   submitOrder(order: Order) {
-
+    this.isshow = false;
+    if (!order.ordermenu || order.ordermenu.length === 0) {
+      alert('주문메뉴를 선택하여 주세요.');
+      return;
+    }
+    if ( order.tableNo === 0) {
+      const answer = confirm('테이블 번호를 지정하지 않으면 예약처리합니다.\n테이블 번호를 지정하여 주세요.\n계속할까요?');
+      if (!answer) {
+        return;
+      }
+    }
+    // 주문을 저장하자.
     order.status = '주문';
     this.ordersService.updateOrder(order._id, order)
     .then((saveordering) => {
+      this.ordering = saveordering;
+      if ( !this.ordering.ordermenu ) {
+        this.ordering.ordermenu = [];
+      }
       alert('주문하였습니다.');
       this.router.navigate(['/stores', this.username], { queryParams: { classify: this.classify } });
       // return;
@@ -295,6 +501,7 @@ export class StoresComponent implements OnInit {
   }
 
   cancelOrder(order: Order) {
+    this.isshow = false;
     const answer = confirm('주문을 취소하시겠습니까?');
     if (!answer) {
       return;
@@ -303,6 +510,10 @@ export class StoresComponent implements OnInit {
     order.status = '고객취소';
     this.ordersService.updateOrder(order._id, order)
     .then((saveordering) => {
+      this.ordering = saveordering;
+      if ( !this.ordering.ordermenu ) {
+        this.ordering.ordermenu = [];
+      }
       alert('주문을 취소하였습니다.');
       this.router.navigate(['/stores', this.username], { queryParams: { classify: this.classify } });
       // return;
@@ -310,5 +521,59 @@ export class StoresComponent implements OnInit {
     .catch((response) => {
       alert('주문을 취소 하지 못했습니다. : ' + response.message);
     });
+  }
+
+  setTable(order: Order) {
+    this.isshow = false;
+    // 테이블 번호가 바뀐 상태이므로 수정 호출
+    this.ordersService.updateOrder(order._id, order)
+    .then((saveordering) => {
+      this.ordering = saveordering;
+        if ( !this.ordering.ordermenu ) {
+          this.ordering.ordermenu = [];
+        }
+      this.router.navigate(['/stores', this.username], { queryParams: { classify: this.classify } });
+    })
+    .catch((response) => {
+      alert('테이블 번호를 변경하지 못하였습니다. : ' + response.message);
+    });
+  }
+
+  private _to2digit(n: number) {
+    return ('00' + n).slice(-2);
+  }
+
+  showOrder() {
+
+    if ( this.isshow === false ) {
+      this.isshow = true;
+
+      // 오늘의 주문을 로드하자.
+      const today = this.today.getFullYear() + '-' + this._to2digit(this.today.getMonth() + 1) + '-' + this._to2digit(this.today.getDate());
+
+      if (this.authService.isLoggedIn()) {
+        // 회원이다.
+        const username = this.authService.getCurrentUser().username;
+        this.ordersService.getMyTodayOrders(username, today)
+        .then((orders) => {
+          this.todayOrders = orders;
+        })
+        .catch((err) => null);
+      } else {
+        // 비회원이다.
+        this.ordersService.getNonmemberTodayOrders(this.user.username, this.phoneno, today)
+        .then((orders) => {
+          // console.log(orders);
+          this.todayOrders = orders;
+        })
+        .catch((err) => null);
+      }
+    } else {
+      this.isshow = false;
+    }
+  }
+
+  getImageName(image: string) {
+    return `\assets\image\{image}.png`;
   }
 }

@@ -4,11 +4,12 @@
     <p>주문할 때? 時至오더, SijiOrder!!!</p>
   </div>
 
-  <div class="contentBox">
-    <ul>
+  <div >
+    <ul style="font-size: 16px;">
       <li *ngFor="let user of users">
         <a [routerLink]="['/','stores',user.username]">{{user.storeName}}</a>
       </li>
     </ul>
   </div>
+
 </div>

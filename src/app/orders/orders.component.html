@@ -20,11 +20,18 @@
         <ng-container *ngIf="orderOnly === true && order.status ==='주문'">
             <tr>
                 <td colspan="4" style="width:100%">
-                  
+                  <!-- * 상태 : 선택, 주문, 접수, 계산, 취소 -->
+                  <ng-container *ngIf="order.type===0">
                     <b>주문서 : {{order.username}} &nbsp;&nbsp;상태: {{order.status}}</b> <br/>
                     주문번호: {{order._id }} - {{order.orderNo}}<br />  
                       {{ order.createdAt | date: 'yyyy-MM-dd HH:mm' }} <br/>
-                      <!-- * 상태 : 선택, 주문, 접수, 계산, 취소 -->
+                  </ng-container>
+                  <ng-container *ngIf="order.type===1">
+                      <b>주문서 : 비회원&nbsp;&nbsp;상태: {{order.status}}</b> <br/>
+                      주문번호: {{order._id }} - {{order.orderNo}}<br />  
+                      {{ order.createdAt | date: 'yyyy-MM-dd HH:mm' }} <br/>
+                      {{order.phoneno}} 
+                  </ng-container>
                 </td>
               </tr>
               <tr>
@@ -52,22 +59,34 @@
               </tr>
               <tr>
                 <td colspan="4" align="right">
-                  테이블: <input style="width: 48px; text-align: center" [(ngModel)]="order.tableNo" type="text"/> &nbsp;&nbsp;&nbsp;&nbsp;
-                  <button class="btn btn-warning btn-sm" (click)="confirmOrder(order, '접수')">접수</button>&nbsp;
-                  <button class="btn btn-primary btn-sm" (click)="confirmOrder(order, '차림')">차림</button>&nbsp;
-                  <button class="btn btn-danger btn-sm" (click)="confirmOrder(order, '취소')">취소</button>
-                  <br/>
-                  <br/>
+                  테이블: <input style="width: 48px; height: 30px; text-align: center" [(ngModel)]="order.tableNo" type="text"/>
+                  <button class="btn btn-default btn-sm" (click)="setTable(order)">지정</button>&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+                  접수문자 <input  type="checkbox" [(ngModel)]="orderAccept"/>
+                  차림문자 <input  type="checkbox" [(ngModel)]="orderReady"/>&nbsp;
+                  <button type="button" class="btn btn-warning btn-sm" (click)="confirmOrder(order, '주문')">주문</button>
+                  <button type="button" class="btn btn-success btn-sm" style="margin-left: 3px" (click)="confirmOrder(order, '접수')">접수</button>
+                  <button type="button" class="btn btn-info btn-sm" style="margin-left: 3px" (click)="confirmOrder(order, '차림')">차림</button>
+                  <button type="button" class="btn btn-primary btn-sm" style="margin-left: 3px" (click)="confirmOrder(order, '계산')">계산</button>
+                  <button type="button" class="btn btn-danger btn-sm" style="margin-left: 3px" (click)="confirmOrder(order, '취소')">취소</button>
                 </td>
               </tr>
         </ng-container>
         <ng-container *ngIf="orderOnly === false">        
           <tr>
             <td colspan="4" style="width:100%">
+                <ng-container *ngIf="order.type===0">
                 <b>주문서 : {{order.username}} &nbsp;&nbsp;상태: {{order.status}}</b> <br/>
                 주문번호: {{order._id }} - {{order.orderNo}}<br />  
                   {{ order.createdAt | date: 'yyyy-MM-dd HH:mm' }} <br/>
                   <!-- * 상태 : 선택, 주문, 접수, 계산, 취소 -->
+                </ng-container>
+                <ng-container *ngIf="order.type===1">
+                    <b>주문서 : 비회원&nbsp;&nbsp;상태: {{order.status}}</b> <br/>
+                    주문번호: {{order._id }} - {{order.orderNo}}<br />  
+                    {{ order.createdAt | date: 'yyyy-MM-dd HH:mm' }} <br/>
+                    {{order.phoneno}} 
+                </ng-container>
             </td>
           </tr>
           <tr>
@@ -95,12 +114,16 @@
           </tr>
           <tr>
             <td colspan="4" align="right">
-              테이블: <input style="width: 48px; text-align: center" [(ngModel)]="order.tableNo" type="text"/> &nbsp;&nbsp;&nbsp;&nbsp;
-              <button class="btn btn-warning btn-sm" (click)="confirmOrder(order, '접수')">접수</button>&nbsp;
-              <button class="btn btn-primary btn-sm" (click)="confirmOrder(order, '차림')">차림</button>&nbsp;
-              <button class="btn btn-danger btn-sm" (click)="confirmOrder(order, '취소')">취소</button>
-              <br/>
-              <br/>
+              테이블 : <input style="width: 48px; height: 30px; text-align: center" [(ngModel)]="order.tableNo" type="text"/>              
+              <button class="btn btn-default btn-sm" (click)="setTable(order)">지정</button>&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              접수문자 <input  type="checkbox" [(ngModel)]="orderAccept"/>
+                  차림문자 <input  type="checkbox" [(ngModel)]="orderReady"/>&nbsp;
+              <button type="button" class="btn btn-warning btn-sm" (click)="confirmOrder(order, '주문')">주문</button>
+              <button type="button" class="btn btn-success btn-sm" style="margin-left: 3px" (click)="confirmOrder(order, '접수')">접수</button>
+              <button type="button" class="btn btn-info btn-sm" style="margin-left: 3px" (click)="confirmOrder(order, '차림')">차림</button>
+              <button type="button" class="btn btn-primary btn-sm" style="margin-left: 3px" (click)="confirmOrder(order, '계산')">계산</button>
+              <button type="button" class="btn btn-danger btn-sm" style="margin-left: 3px" (click)="confirmOrder(order, '취소')">취소</button>
             </td>
           </tr>
         </ng-container> 

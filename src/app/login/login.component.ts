@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
   };
   formErrorMessages = {
     'username': {
-      'required': '사용자 이름을 입력하세요!',
+      'required': '회원아이디를 입력하세요!',
     },
     'password': {
       'required': '비밀번호를 입력하세요!',
@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit {
   submit() {
     this.utilService.makeFormDirtyAndUpdateErrors(this.form, this.formErrors, this.formErrorMessages);
     if (this.form.valid) {
-      this.authService.login(this.form.value.username, this.form.value.password)
+      this.authService.login(this.form.value.username, this.form.value.password, '회원')
       .then(data => {
         this.router.navigate([this.redirectTo ? this.redirectTo : '/']);
       })

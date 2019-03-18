@@ -4,7 +4,27 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MatProgressBarModule } from '@angular/material';
-import { MatDatepickerModule } from '@angular/material/datepicker';
+
+import {
+  MatButtonModule,
+  MatMenuModule,
+  MatToolbarModule,
+  MatIconModule,
+  MatCardModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatDatepickerModule,
+  MatDatepicker,
+  MatNativeDateModule,
+  MatRadioModule,
+  MatSelectModule,
+  MatOptionModule,
+  MatSlideToggleModule,
+  ErrorStateMatcher,
+  ShowOnDirtyErrorStateMatcher
+} from '@angular/material';
+
+import { AppComponent } from './app.component';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AuthGuard } from './auth.guard';
@@ -20,8 +40,8 @@ import { UserService } from './user.service';
 import { MenuService } from './menu.service';
 import { SettingService } from './setting.service';
 import { OrdersService } from './orders.service';
+import { FcmsService } from './fcms.service';
 
-import { AppComponent } from './app.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { Error404Component } from './error404/error404.component';
 import { LoginComponent } from './login/login.component';
@@ -41,6 +61,8 @@ import { SettingsAddComponent } from './settings-add/settings-add.component';
 import { StoresIndexComponent } from './stores-index/stores-index.component';
 import { OrdersComponent } from './orders/orders.component';
 import { MyordersComponent } from './myorders/myorders.component';
+import { SignUpComponent } from './sign-up/sign-up.component';
+import { SignUpUpdateComponent } from './sign-up-update/sign-up-update.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +84,8 @@ import { MyordersComponent } from './myorders/myorders.component';
     StoresIndexComponent,
     OrdersComponent,
     MyordersComponent,
+    SignUpComponent,
+    SignUpUpdateComponent,
   ],
   imports: [
     BrowserModule,
@@ -71,13 +95,45 @@ import { MyordersComponent } from './myorders/myorders.component';
     FormsModule,
     ReactiveFormsModule,
     MatProgressBarModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatButtonModule,
+    MatMenuModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatNativeDateModule,
+    MatRadioModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatSlideToggleModule
+  ],
+  exports: [
+    MatButtonModule,
+    MatMenuModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatCardModule,
+    BrowserAnimationsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatRadioModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatSlideToggleModule
   ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: RequestInterceptorService,
       multi: true,
+    },
+    {
+      provide: ErrorStateMatcher,
+      useClass: ShowOnDirtyErrorStateMatcher
     },
     AuthGuard,
     UtilService,
@@ -86,6 +142,7 @@ import { MyordersComponent } from './myorders/myorders.component';
     MenuService,
     SettingService,
     OrdersService,
+    FcmsService,
     UsersResolve,
     UserResolve,
     MenusResolve,

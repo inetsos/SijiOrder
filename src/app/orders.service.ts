@@ -4,10 +4,8 @@ import { HttpClient } from '@angular/common/http';
 
 import { UtilService } from './util.service';
 import { ApiResponse } from './api-response';
-import { OrderEx } from './orderEx';
 import { Order } from './order';
 import { OrderMenu } from './ordermenu';
-
 
 @Injectable({
   providedIn: 'root'
@@ -18,45 +16,78 @@ export class OrdersService {
 
   constructor(private http: HttpClient, private utilService: UtilService) { }
 
-  getOrders(storename: string): Promise<OrderEx[]> {
+  getOrders(storename: string): Promise<Order[]> {
     return this.http.get<ApiResponse>(`${this.apiBaseUrl}/${storename}`)
     .toPromise()
     .then(this.utilService.checkSuccess)
     .then(response => {
-      return response.data as OrderEx[];
+      return response.data as Order[];
     })
     .catch(this.utilService.handleApiError);
   }
 
-  getTodayOrders(storename: string, today: string): Promise<OrderEx[]> {
+  getTodayOrders(storename: string, today: string): Promise<Order[]> {
     return this.http.get<ApiResponse>(`${this.apiBaseUrl}/today/${storename}/${today}`)
     .toPromise()
     .then(this.utilService.checkSuccess)
     .then(response => {
-      return response.data as OrderEx[];
+      return response.data as Order[];
     })
     .catch(this.utilService.handleApiError);
   }
 
-  getMyOrders(username: string): Promise<OrderEx[]> {
+  getMyOrders(username: string): Promise<Order[]> {
     // return this.http.get<ApiResponse>(`${this.apiBaseUrl}/myorder/${username}/${today}`)
     return this.http.get<ApiResponse>(`${this.apiBaseUrl}/myorder/${username}`)
     .toPromise()
     .then(this.utilService.checkSuccess)
     .then(response => {
-      return response.data as OrderEx[];
+      return response.data as Order[];
+    })
+    .catch(this.utilService.handleApiError);
+  }
+
+  getMyTodayOrders(username: string, today: string): Promise<Order[]> {
+    // return this.http.get<ApiResponse>(`${this.apiBaseUrl}/myorder/${username}/${today}`)
+    return this.http.get<ApiResponse>(`${this.apiBaseUrl}/myorder/today/${username}/${today}`)
+    .toPromise()
+    .then(this.utilService.checkSuccess)
+    .then(response => {
+      return response.data as Order[];
     })
     .catch(this.utilService.handleApiError);
   }
 
   // 현재 주문중인 주문서를 가져온다.
-  getOrdering(storename: string, username: string): Promise<OrderEx> {
+  getOrdering(storename: string, username: string): Promise<Order> {
     return this.http.get<ApiResponse>(`${this.apiBaseUrl}/ordering/${storename}/${username}`)
     .toPromise()
     .then(this.utilService.checkSuccess)
     .then(response => {
       // console.log(response);
-      return response.data as OrderEx;
+      return response.data as Order;
+    })
+    .catch(this.utilService.handleApiError);
+  }
+
+  getNonmemberOrdering(storename: string, phoneno: string): Promise<Order> {
+    return this.http.get<ApiResponse>(`${this.apiBaseUrl}/nonmember/${storename}/${phoneno}`)
+    .toPromise()
+    .then(this.utilService.checkSuccess)
+    .then(response => {
+      // console.log(response);
+      return response.data as Order;
+    })
+    .catch(this.utilService.handleApiError);
+  }
+
+  getNonmemberTodayOrders(storename: string, phoneno: string, today: string): Promise<Order[]> {
+    return this.http.get<ApiResponse>(`${this.apiBaseUrl}/nonmember/today/${storename}/${phoneno}/${today}`)
+    .toPromise()
+    .then(this.utilService.checkSuccess)
+    .then(response => {
+      // console.log(response);
+      return response.data as Order[];
     })
     .catch(this.utilService.handleApiError);
   }

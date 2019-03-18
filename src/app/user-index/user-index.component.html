@@ -4,7 +4,7 @@
     <h3 class="contentBoxTop">Users</h3>
     <ul>
       <ng-container *ngIf="users == null || users.length == 0">
-        <div class="noData" colspan=100> 사용자가 없습니다.</div>
+        <div class="noData" colspan=100> 등록된 회원이 없습니다.</div>
       </ng-container>
         <li *ngFor="let user of users">
           <a [routerLink]="['/','users',user.username]">{{user.username}}</a>

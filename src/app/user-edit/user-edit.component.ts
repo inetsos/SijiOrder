@@ -30,7 +30,7 @@ export class UserEditComponent implements OnInit {
   };
   formErrorMessages = {
     'username': {
-      'required': '사용자이름을 입력하세요.',
+      'required': '회원아이디를 입력하세요.',
       'pattern': '8~16자의 영문 숫자 조합입니다.',
     },
     'currentPassword': {

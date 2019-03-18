@@ -1,0 +1,139 @@
+<mat-card>    
+    <!-- Title of an Card --> 
+      <mat-card-subtitle>    
+          <b>회원정보수정</b>
+      </mat-card-subtitle>  
+  
+      <mat-card-content>    
+          <form [formGroup]="form" (ngSubmit)="submit()">    
+              <table> 
+                  <tr>  
+                      <td>    
+                          <mat-form-field class="demo-full-width">    
+                              <input matInput formControlName="currentPassword" placeholder="현재 비밀번호*" type="password">
+                              <span *ngIf="formErrors.currentPassword" class="help-block">{{formErrors.currentPassword}}</span>
+                          </mat-form-field>    
+                      </td>    
+                  </tr>
+  
+                  <tr>  
+                      <td>    
+                          <mat-form-field class="demo-full-width">    
+                              <input matInput formControlName="username" placeholder="회원아이디*" >
+                              <span *ngIf="formErrors.username" class="help-block">{{formErrors.username}}</span>
+                          </mat-form-field>    
+                      </td>    
+                  </tr>
+  
+                  <tr>  
+                      <td>    
+                          <mat-form-field class="demo-full-width">    
+                              <input matInput formControlName="name" placeholder="이름" >
+                          </mat-form-field>    
+                      </td>    
+                  </tr>
+  
+                  <tr>  
+                      <td>    
+                          <mat-form-field class="demo-full-width">    
+                              <input matInput formControlName="phone" placeholder="휴대폰*" >
+                              <span *ngIf="formErrors.phone" class="help-block">{{formErrors.phone}}</span>
+                          </mat-form-field>    
+                      </td>    
+                  </tr>
+  
+                  <tr>  
+                      <td>    
+                          <mat-form-field class="demo-full-width">    
+                              <input matInput formControlName="email" placeholder="메일" >
+                              <span *ngIf="formErrors.email" class="help-block">{{formErrors.email}}</span>
+                          </mat-form-field>    
+                      </td>    
+                  </tr>
+  
+                  <tr>  
+                      <td> 
+                          <mat-form-field>    
+                              <input matInput placeholder="주소검색" [(ngModel)]="keyword" [ngModelOptions]="{standalone: true}">
+                          </mat-form-field>                        
+                          <button mat-icon-button type="button" (click)="queryAddr()">
+                              <mat-icon>search</mat-icon>
+                          </button><br/>           
+                          <small>예)세종대로 209,국립중앙박물관,상암동 1595</small> 
+                      </td>    
+                  </tr>
+                  <ng-container *ngIf="result_view === true" >
+                      <ng-container *ngFor=" let address of addresses; let i=index" >
+                          <tr>
+                              <td>
+                                  <div style="border-bottom: 1px solid #dddddd; padding: 3px">
+                                      <a (click)="setAddr(address)">
+                                          {{ address.roadAddr}} <br/>
+                                          <small>{{ address.jibunAddr}}</small>
+                                      </a>
+                                  </div>
+                              </td>
+                          </tr>
+                      </ng-container>
+                  </ng-container>
+  
+                  <tr>    
+                      <td>    
+                          <mat-form-field class="demo-full-width">    
+                              <textarea matInput formControlName="roadAddr" placeholder="도로명주소" matTextareaAutosize matAutosizeMinRows="2" matAutosizeMaxRows="5"></textarea>    
+                          </mat-form-field>    
+                      </td>    
+                  </tr>   
+  
+                  <tr>    
+                      <td>    
+                          <mat-form-field class="demo-full-width">    
+                              <textarea matInput formControlName="jibunAddr" placeholder="지번주소" matTextareaAutosize matAutosizeMinRows="2" matAutosizeMaxRows="5"></textarea>    
+                          </mat-form-field>    
+                      </td>    
+                  </tr>  
+  
+                  <tr>    
+                      <td>    
+                          <mat-form-field class="demo-full-width">    
+                              <textarea matInput formControlName="detailAddr" placeholder="상세주소" matTextareaAutosize matAutosizeMinRows="2" matAutosizeMaxRows="5"></textarea>    
+                          </mat-form-field>    
+                      </td>    
+                  </tr>  
+  
+                  <tr>  
+                      <td>    
+                          <mat-form-field class="demo-full-width">    
+                              <input matInput formControlName="newPassword" placeholder="새비밀번호*" type="password">
+                              <span *ngIf="formErrors.newPassword" class="help-block">{{formErrors.newPassword}}</span>
+                          </mat-form-field>    
+                      </td>    
+                  </tr>
+  
+                  <tr>  
+                      <td>    
+                          <mat-form-field class="demo-full-width">    
+                              <input matInput formControlName="confirmPassword" placeholder="비밀번호 확인*" type="password">
+                              <span *ngIf="formErrors.confirmPassword" class="help-block">{{formErrors.confirmPassword}}</span>
+                          </mat-form-field>    
+                      </td>    
+                  </tr>
+  
+                  <tr>
+                      <td>
+                          *필수항목
+                          <div *ngIf="errorResponse?.message" class="alert alert-danger">
+                              {{errorResponse?.message}}
+                          </div>
+                      </td>
+                  </tr>
+  
+                  <tr>    
+                      <td class="content-right">    
+                          <button mat-raised-button color="accent">확인</button>    
+                      </td>    
+                  </tr>
+              </table>    
+          </form>    
+      </mat-card-content>    
+  </mat-card> 

@@ -1,56 +1,61 @@
 <div class="page page-orders">
 
-  <h5 *ngIf="user"><b>내 주문</b></h5>
-
-  <!-- <input style="width: 100px;" matInput [matDatepicker]="picker" placeholder="" [(ngModel)]="today" (ngModelChange)="todayOrders()">
-  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-  <mat-datepicker #picker></mat-datepicker>  -->
-
-  <table class="table table-striped menus" border="0">
-    <tbody>
-      <tr *ngIf = "!orders || orders.length === 0">
-        <td class="noData" colspan="3">등록된 주문이 없습니다.</td>
-      </tr>
-
-      <ng-container *ngFor="let order of orders; let i=index">      
-        <tr>
-          <td colspan="4" style="width:100%">
-              <b>{{order.shopname}}</b> &nbsp;&nbsp;상태: {{order.status}}<br/>
+    <h4 *ngIf="user"><b>{{user.username}}</b></h4>
+  
+    <input style="width: 100px;" matInput [matDatepicker]="picker" placeholder="" [(ngModel)]="today" (ngModelChange)="todayOrders()">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker> 
+  
+    &nbsp;&nbsp; 주문 전체 <input  type="checkbox" [(ngModel)]="totalOrder" (ngModelChange)="totalOrders() "/>
+  
+    <table class="table table-striped menus" border="0">
+      <tbody>    
+  
+        <tr *ngIf = "!orders || orders.length === 0">
+          <td class="noData" colspan="3">주문이 없습니다.</td>
+        </tr>
+  
+        <ng-container *ngFor="let order of orders; let i=index"> 
+          <tr>
+            <td colspan="4" style="width:100%">
+              <b>주문서 : {{order.shopname}} &nbsp;&nbsp;<span style="color: blue">상태: {{order.status}}</span> &nbsp;&nbsp;테이블: {{order.tableNo}}</b> <br/>
               주문번호: {{order._id }} - {{order.orderNo}}<br />  
               {{ order.createdAt | date: 'yyyy-MM-dd HH:mm' }} <br/>
-                <!-- * 상태 : 선택, 주문, 접수, 계산, 취소 -->
-          </td>
-        </tr>
-
-        <tr>
-          <th style="width:35%" class="text-center">맛있는 메뉴</th>
-          <th style="width:15%" class="text-center">가격</th>
-          <th style="width:30%" class="text-center">수량</th>
-          <th style="width:20%" class="text-center">금액</th>
-        </tr>
-
-        <ng-container *ngFor="let ordermenu of order.ordermenu">
-          <tr>            
-            <td>
-                <div *ngIf="ordermenu.classify==='곱배기';then content else other_content"></div>    
-                <ng-template #content>{{ordermenu.name}}(곱)</ng-template>
-                <ng-template #other_content>{{ordermenu.name}}</ng-template>
             </td>
-            <td align="right">{{ordermenu.price | number}}</td>
-            <td align="right"> {{ordermenu.number | number}}</td>
-            <td align="right"> {{ordermenu.sum | number}}</td>
+          </tr>
+          <tr>
+            <th style="width:35%" class="text-center">맛있는 메뉴</th>
+            <th style="width:15%" class="text-center">가격</th>
+            <th style="width:30%" class="text-center">수량</th>
+            <th style="width:20%" class="text-center">금액</th>
+          </tr>
+          <ng-container *ngFor="let ordermenu of order.ordermenu">
+            <tr>            
+              <td> {{ordermenu.name}} </td>
+              <td align="right">{{ordermenu.price | number}}</td>
+              <td align="right"> {{ordermenu.number | number}}</td>
+              <td align="right"> {{ordermenu.sum | number}}</td>
+            </tr>
+          </ng-container>
+          <tr>
+            <td colspan="4" align="right">
+              <b>합계: {{ getTotal(order) | number }}</b>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="4" align="right">
+              테이블 : <input style="width: 48px; height: 30px; text-align: center" [(ngModel)]="order.tableNo" type="text"/>&nbsp;
+              <ng-container *ngIf="order.status==='주문'; else other_content">
+                <button class="btn btn-default btn-sm" (click)="setTable(order)">지정</button>
+              </ng-container> 
+              <ng-template #other_content>
+                <button class="btn btn-default btn-sm" (click)="setTable(order)" disabled='disabled'>지정</button>
+              </ng-template>
+            </td>
           </tr>
         </ng-container>
 
-        <tr>
-          <td colspan="4" align="right">
-            <b>합계: {{ getTotal(order) | number }}</b>
-          </td>
-        </tr>
-
-      </ng-container> 
-
-    </tbody>
-  </table>
-</div>
+      </tbody>
+    </table>
+  </div>
   

@@ -27,7 +27,7 @@ export class UserStoreComponent implements OnInit {
   };
   formErrorMessages = {
     'username': {
-      'required': '사용자 이름을 입력하세요.',
+      'required': '회원아이디를 입력하세요.',
       'pattern': '8~16자의 영문 숫자입니다.',
     },
     'phone': {

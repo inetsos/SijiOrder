@@ -15,6 +15,9 @@ import { UserShowComponent } from './user-show/user-show.component';
 import { UserEditComponent } from './user-edit/user-edit.component';
 import { LoginComponent } from './login/login.component';
 
+import { SignUpComponent } from './sign-up/sign-up.component';
+import { SignUpUpdateComponent } from './sign-up-update/sign-up-update.component';
+
 import { MenuIndexComponent } from './menu-index/menu-index.component';
 import { MenuNewComponent } from './menu-new/menu-new.component';
 import { MenuEditComponent } from './menu-edit/menu-edit.component';
@@ -36,6 +39,7 @@ const routes: Routes = [
   { path: '',  component: WelcomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'users/new',  component: UserNewComponent },
+  { path: 'users/signup',  component: SignUpComponent },
   { path: 'users/store',  component: UserStoreComponent },
   { path: 'users', canActivate: [AuthGuard],
     children: [
@@ -56,6 +60,13 @@ const routes: Routes = [
       {
         path: ':username/edit',
         component: UserEditComponent,
+        resolve: {
+          user: UserResolve
+        }
+      },
+      {
+        path: ':username/update',
+        component: SignUpUpdateComponent,
         resolve: {
           user: UserResolve
         }

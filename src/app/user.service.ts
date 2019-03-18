@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { UtilService } from './util.service';
 import { ApiResponse } from './api-response';
 import { User } from './user';
+import { Jusos } from './jusos';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,7 @@ import { User } from './user';
 export class UserService {
 
   private apiBaseUrl = `${environment.apiBaseUrl}/users`;
+  private apiJusoUrl = `${environment.apiBaseUrl}/juso`;
 
   constructor(private http: HttpClient, private utilService: UtilService) { }
 
@@ -53,6 +55,16 @@ export class UserService {
                 return response.data as User;
               })
               .catch(this.utilService.handleApiError);
+  }
+
+  getAddress(keyword: string) {
+    return this.http.get<ApiResponse>(`${this.apiJusoUrl}/${keyword}`)
+              .toPromise()
+              .then(this.utilService.checkSuccess)
+              .then((response) => {
+                return response.data as Jusos;
+              });
+              // .catch(this.utilService.handleApiError);
   }
 
   create(user: User): Promise<User> {

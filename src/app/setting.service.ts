@@ -18,8 +18,7 @@ export class SettingService {
   constructor(private http: HttpClient, private utilService: UtilService,
     private authService: AuthService) { }
 
-  index(): Promise<Setting[]> {
-    const username = this.authService.getCurrentUser().username;
+  index(username: string): Promise<Setting[]> {
     return this.http.get<ApiResponse>(`${this.apiBaseUrl}/${username}`)
               .toPromise()
               .then(this.utilService.checkSuccess)
@@ -40,9 +39,19 @@ export class SettingService {
   }
 
   create(setting: Setting): Promise<Setting> {
-    // 여기서... 메뉴에 사용자 코드를 추가하자.
-    setting.username = this.authService.getCurrentUser().username;
+    // 여기서... 메뉴에 회원아이디를 추가하자.
+    // setting.username = this.authService.getCurrentUser().username;
     return this.http.post<ApiResponse>(`${this.apiBaseUrl}`, setting)
+              .toPromise()
+              .then(this.utilService.checkSuccess)
+              .then(response => {
+                return response.data as Setting;
+              })
+              .catch(this.utilService.handleApiError);
+  }
+
+  update(id: string, setting: Setting): Promise<Setting> {
+    return this.http.put<ApiResponse>(`${this.apiBaseUrl}/${id}`, setting)
               .toPromise()
               .then(this.utilService.checkSuccess)
               .then(response => {
@@ -60,4 +69,5 @@ export class SettingService {
               })
               .catch(this.utilService.handleApiError);
   }
+
 }

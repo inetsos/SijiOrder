@@ -17,8 +17,8 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router, private utilService: UtilService) { }
 
-  login(username: string, password: string): Promise<any> {
-    return this.http.post<ApiResponse>(`${this.apiBaseUrl}/login`, {username: username, password: password})
+  login(username: string, password: string, group: string): Promise<any> {
+    return this.http.post<ApiResponse>(`${this.apiBaseUrl}/login`, {username: username, password: password, group: group})
               .toPromise()
               .then(this.utilService.checkSuccess)
               .then(response => {
