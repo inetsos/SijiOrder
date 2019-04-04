@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # SijiOrder-order
+=======
+# SijiOrder-shop
+>>>>>>> 3d03b9581c0a340111d9fb78398d3497725e8dab
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.2.4.
 

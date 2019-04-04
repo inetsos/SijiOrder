@@ -1,5 +1,6 @@
 <div class="page page-menus">
 
+    <h4 *ngIf="user"><b>{{user.storeName}}</b></h4>
   <!-- <div class="buttons">
     <a [routerLink]="['/','users',user.username]" class="btn btn-default">뒤로</a>
     <span *ngIf="authService.isLoggedIn() && authService.getCurrentUser()._id == user._id"
@@ -8,7 +9,11 @@
   
   <form class="user-form form-horizontal" [formGroup]="form" (ngSubmit)="submit()" class="login-form form-horizontal" >
     <div class="contentBox">
+<<<<<<< HEAD
       <h3 class="contentBoxTop">회원정보 수정</h3>
+=======
+      <h3 class="contentBoxTop">가맹점 정보 수정</h3>
+>>>>>>> 3d03b9581c0a340111d9fb78398d3497725e8dab
 
       <fieldset>
         <div class="form-group" [ngClass]="{'has-error': formErrors.currentPassword}">
@@ -23,7 +28,7 @@
         <div class="form-group" [ngClass]="{'has-error': formErrors.username}">
           <label for="username" class="col-sm-3 control-label">회원아이디*</label>
           <div class="col-sm-9">
-            <input class="form-control" type="text" formControlName="username" id="username">
+            <input class="form-control" type="text" formControlName="username" id="username" readonly>
             <span *ngIf="formErrors.username" class="help-block">{{formErrors.username}}</span>
           </div>
         </div>

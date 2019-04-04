@@ -39,7 +39,11 @@ export class SettingService {
   }
 
   create(setting: Setting): Promise<Setting> {
+<<<<<<< HEAD
     // 여기서... 메뉴에 회원아이디를 추가하자.
+=======
+    // 여기서... 메뉴에 사용자 코드를 추가하자.
+>>>>>>> 3d03b9581c0a340111d9fb78398d3497725e8dab
     // setting.username = this.authService.getCurrentUser().username;
     return this.http.post<ApiResponse>(`${this.apiBaseUrl}`, setting)
               .toPromise()

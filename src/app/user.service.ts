@@ -7,6 +7,8 @@ import { ApiResponse } from './api-response';
 import { User } from './user';
 import { Jusos } from './jusos';
 
+import { Jusos } from './jusos';
+
 @Injectable({
   providedIn: 'root'
 })

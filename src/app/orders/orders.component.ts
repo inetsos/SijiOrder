@@ -52,6 +52,12 @@ export class OrdersComponent implements OnInit {
   }
 
   ngOnInit() {
+    // this.user = this.authService.getCurrentUser();
+    // this.settingService.index(this.user.username).then((settings) => this.settings = settings);
+    // this.todayOrders();
+
+    // 10초 타이머를 이용하여 주문을 자동 로드한다.
+    setInterval(() => { this.todayOrders(); }, 10000);
   }
 
   todayOrders() {
@@ -60,7 +66,9 @@ export class OrdersComponent implements OnInit {
     const today = this.today.getFullYear() + '-' + this._to2digit(this.today.getMonth() + 1) + '-' + this._to2digit(this.today.getDate());
 
     this.ordersService.getTodayOrders(storename, today)
-    .then((orders) => this.orders = orders )
+    .then((orders) => {
+      this.orders = orders;
+     })
     .catch((err) => null);
   }
 
@@ -79,6 +87,7 @@ export class OrdersComponent implements OnInit {
 
   confirmOrder(order: Order, status: string) {
 
+    // 문자 전송 체크에 따라 문자 전송을 한다.
     order.status = status;
     this.ordersService.updateOrder(order._id, order)
     .then((saveordering) => {

@@ -1,6 +1,6 @@
 <div class="page page-orders">
 
-  <h5 *ngIf="user"><b>{{user.storeName}}</b></h5>
+  <h4 *ngIf="user"><b>{{user.storeName}}</b></h4>
 
   <input style="width: 100px;" matInput [matDatepicker]="picker" placeholder="" [(ngModel)]="today" (ngModelChange)="todayOrders()">
   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -22,6 +22,7 @@
                 <td colspan="4" style="width:100%">
                   <!-- * 상태 : 선택, 주문, 접수, 계산, 취소 -->
                   <ng-container *ngIf="order.type===0">
+<<<<<<< HEAD
                     <b>주문서 : {{order.username}} &nbsp;&nbsp;상태: {{order.status}}</b> <br/>
                     주문번호: {{order._id }} - {{order.orderNo}}<br />  
                       {{ order.createdAt | date: 'yyyy-MM-dd HH:mm' }} <br/>
@@ -31,6 +32,17 @@
                       주문번호: {{order._id }} - {{order.orderNo}}<br />  
                       {{ order.createdAt | date: 'yyyy-MM-dd HH:mm' }} <br/>
                       {{order.phoneno}} 
+=======
+                    <b>주문서 : {{order.username}} &nbsp;&nbsp;상태: {{order.status}} &nbsp;&nbsp;테이블: {{order.tableNo}}</b> <br/>
+                    주문번호: {{order._id }} - {{order.orderNo}}<br />  
+                    {{ order.createdAt | date: 'yyyy-MM-dd HH:mm' }} <br/>
+                  </ng-container>
+                  <ng-container *ngIf="order.type===1">
+                    <b>주문서 : 비회원&nbsp;&nbsp;상태: {{order.status}} &nbsp;&nbsp;테이블: {{order.tableNo}}</b> <br/>
+                    주문번호: {{order._id }} - {{order.orderNo}}<br />  
+                    {{ order.createdAt | date: 'yyyy-MM-dd HH:mm' }} <br/>
+                    {{ order.phoneno }} 
+>>>>>>> 3d03b9581c0a340111d9fb78398d3497725e8dab
                   </ng-container>
                 </td>
               </tr>
@@ -48,8 +60,8 @@
                       <ng-template #other_content>{{ordermenu.name}}</ng-template>
                   </td>
                   <td align="right">{{ordermenu.price | number}}</td>
-                  <td align="right"> {{ordermenu.number | number}}</td>
-                  <td align="right"> {{ordermenu.sum | number}}</td>
+                  <td align="right">{{ordermenu.number | number}}</td>
+                  <td align="right">{{ordermenu.sum | number}}</td>
                 </tr>
               </ng-container>
               <tr>
@@ -59,7 +71,11 @@
               </tr>
               <tr>
                 <td colspan="4" align="right">
+<<<<<<< HEAD
                   테이블: <input style="width: 48px; height: 30px; text-align: center" [(ngModel)]="order.tableNo" type="text"/>
+=======
+                  테이블: <input style="width: 48px; height: 30px; padding-bottom: 6px; text-align: center" [(ngModel)]="order.tableNo" type="text"/>
+>>>>>>> 3d03b9581c0a340111d9fb78398d3497725e8dab
                   <button class="btn btn-default btn-sm" (click)="setTable(order)">지정</button>&nbsp;
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   접수문자 <input  type="checkbox" [(ngModel)]="orderAccept"/>
@@ -76,13 +92,21 @@
           <tr>
             <td colspan="4" style="width:100%">
                 <ng-container *ngIf="order.type===0">
+<<<<<<< HEAD
                 <b>주문서 : {{order.username}} &nbsp;&nbsp;상태: {{order.status}}</b> <br/>
+=======
+                <b>주문서 : {{order.username}} &nbsp;&nbsp;<span style="color: blue">상태: {{order.status}}</span> &nbsp;&nbsp;테이블: {{order.tableNo}}</b> <br/>
+>>>>>>> 3d03b9581c0a340111d9fb78398d3497725e8dab
                 주문번호: {{order._id }} - {{order.orderNo}}<br />  
                   {{ order.createdAt | date: 'yyyy-MM-dd HH:mm' }} <br/>
                   <!-- * 상태 : 선택, 주문, 접수, 계산, 취소 -->
                 </ng-container>
                 <ng-container *ngIf="order.type===1">
+<<<<<<< HEAD
                     <b>주문서 : 비회원&nbsp;&nbsp;상태: {{order.status}}</b> <br/>
+=======
+                    <b>주문서 : 비회원&nbsp;&nbsp;<span style="color: blue">상태: {{order.status}}</span> &nbsp;&nbsp;테이블: {{order.tableNo}}</b> <br/>
+>>>>>>> 3d03b9581c0a340111d9fb78398d3497725e8dab
                     주문번호: {{order._id }} - {{order.orderNo}}<br />  
                     {{ order.createdAt | date: 'yyyy-MM-dd HH:mm' }} <br/>
                     {{order.phoneno}} 
@@ -114,6 +138,7 @@
           </tr>
           <tr>
             <td colspan="4" align="right">
+<<<<<<< HEAD
               테이블 : <input style="width: 48px; height: 30px; text-align: center" [(ngModel)]="order.tableNo" type="text"/>              
               <button class="btn btn-default btn-sm" (click)="setTable(order)">지정</button>&nbsp;
               &nbsp;&nbsp;&nbsp;&nbsp;
@@ -124,6 +149,23 @@
               <button type="button" class="btn btn-info btn-sm" style="margin-left: 3px" (click)="confirmOrder(order, '차림')">차림</button>
               <button type="button" class="btn btn-primary btn-sm" style="margin-left: 3px" (click)="confirmOrder(order, '계산')">계산</button>
               <button type="button" class="btn btn-danger btn-sm" style="margin-left: 3px" (click)="confirmOrder(order, '취소')">취소</button>
+=======
+              <div style="text-align: center"> 
+                <div class="row" style="height:34px;">
+                  테이블 : <input style="width: 48px; height: 30px; text-align: center" [(ngModel)]="order.tableNo" type="text"/>              
+                  <button class="btn btn-default btn-sm" (click)="setTable(order)">지정</button> &nbsp;&nbsp;
+                  접수문자 <input  type="checkbox" [(ngModel)]="orderAccept"/> 
+                  차림문자 <input  type="checkbox" [(ngModel)]="orderReady"/>
+                </div>
+                <div class="row" style="height:34px;">
+                  <button type="button" class="btn btn-warning btn-sm" (click)="confirmOrder(order, '주문')">주문</button>
+                  <button type="button" class="btn btn-success btn-sm" style="margin-left: 3px" (click)="confirmOrder(order, '접수')">접수</button>
+                  <button type="button" class="btn btn-info btn-sm" style="margin-left: 3px" (click)="confirmOrder(order, '차림')">차림</button>
+                  <button type="button" class="btn btn-primary btn-sm" style="margin-left: 3px" (click)="confirmOrder(order, '계산')">계산</button>
+                  <button type="button" class="btn btn-danger btn-sm" style="margin-left: 3px" (click)="confirmOrder(order, '취소')">취소</button>
+                </div>
+              </div>
+>>>>>>> 3d03b9581c0a340111d9fb78398d3497725e8dab
             </td>
           </tr>
         </ng-container> 

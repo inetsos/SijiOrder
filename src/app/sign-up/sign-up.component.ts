@@ -27,6 +27,10 @@ export class SignUpComponent implements OnInit {
   formErrors = {
     'username': '',
     'name': '',
+<<<<<<< HEAD
+=======
+    'storename': '',
+>>>>>>> 3d03b9581c0a340111d9fb78398d3497725e8dab
     'phone': '',
     'email': '',
     'password': '',
@@ -35,7 +39,14 @@ export class SignUpComponent implements OnInit {
   formErrorMessages = {
     'username': {
       'required': '회원아이디를 입력하세요.',
+<<<<<<< HEAD
       'pattern': '8~16자의 영문 숫자입니다.',
+=======
+      'pattern': '6~16자의 영문 숫자입니다.',
+    },
+    'storename': {
+      'required': '상호를 입력하세요.',
+>>>>>>> 3d03b9581c0a340111d9fb78398d3497725e8dab
     },
     'phone': {
       'required': '휴대폰번호를 입력하세요.',
@@ -56,10 +67,17 @@ export class SignUpComponent implements OnInit {
 
   buildForm(): void {
     this.form = this.formBuilder.group({
+<<<<<<< HEAD
       group: ['회원'],
       username: ['', [Validators.required, Validators.pattern(/^.{8,16}$/)]],
       name: [''],
       storeName: [''],
+=======
+      group: ['가맹점'],
+      username: ['', [Validators.required, Validators.pattern(/^.{6,16}$/)]],
+      name: [''],
+      storeName: ['', [Validators.required]],
+>>>>>>> 3d03b9581c0a340111d9fb78398d3497725e8dab
       phone: ['', [Validators.required, Validators.pattern(/^\d{3}-\d{3,4}-\d{4}$/)]],
       email: ['', [Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]],
       roadAddr: [''],
@@ -90,10 +108,13 @@ export class SignUpComponent implements OnInit {
      }
 
   ngOnInit() {
+<<<<<<< HEAD
     // this.userService.getAddress('사월동 500').
     //   then((juso) => {
     //     console.log(juso);
     //   });
+=======
+>>>>>>> 3d03b9581c0a340111d9fb78398d3497725e8dab
   }
 
   submit() {

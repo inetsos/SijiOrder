@@ -4,6 +4,7 @@ import { Setting } from '../setting';
 import { AuthService } from '../auth.service';
 import { SettingService } from '../setting.service';
 import { ApiResponse } from '../api-response';
+import { User } from '../user';
 
 @Component({
   selector: 'app-settings',
@@ -18,6 +19,12 @@ export class SettingsComponent implements OnInit {
   errorResponse: ApiResponse;
   username = '';
 
+<<<<<<< HEAD
+=======
+  user: User;
+  username = '';
+
+>>>>>>> 3d03b9581c0a340111d9fb78398d3497725e8dab
   constructor(private router: Router, private settingService: SettingService,
     private authService: AuthService) {
       this.navigationSubscription = this.router.events.subscribe((e: any) => {
@@ -30,14 +37,23 @@ export class SettingsComponent implements OnInit {
   }
 
   ngOnInit() {
+<<<<<<< HEAD
     this.username = this.authService.getCurrentUser().username;
+=======
+    this.user = this.authService.getCurrentUser();
+    this.username = this.user.username; // this.authService.getCurrentUser().username;
+>>>>>>> 3d03b9581c0a340111d9fb78398d3497725e8dab
     this.settingService.index(this.username).then((settings) => this.settings = settings);
   }
 
   createSetting() {
 
     // type, content, username
+<<<<<<< HEAD
     const types = ['메뉴분류순서', 'SMS발신폰번호', '열렸음/닫혔음', '접수문자', '차림문자'];
+=======
+    const types = ['메뉴분류순서', 'SMS발신폰번호', '모바일주문', '접수문자', '차림문자'];
+>>>>>>> 3d03b9581c0a340111d9fb78398d3497725e8dab
     const promises = [];
 
     for (let i = 0; i < types.length; i++) {
@@ -71,10 +87,20 @@ export class SettingsComponent implements OnInit {
     return false;
   }
 
+<<<<<<< HEAD
   setContent(setting: Setting) {
     if (setting.type === 'SMS발신폰번호') {
       setting.content = setting.content.replace(/[^0-9]/g, ''); // 숫자만 추출
     }
+=======
+  setContent(setting: Setting, content: string) {
+    if (setting.type === 'SMS발신폰번호') {
+      setting.content = setting.content.replace(/[^0-9]/g, ''); // 숫자만 추출
+    } else if ( setting.type === '모바일주문') {
+      setting.content = content;
+    }
+
+>>>>>>> 3d03b9581c0a340111d9fb78398d3497725e8dab
     this.settingService.update(setting._id, setting)
       .then(data => {
         this.router.navigate(['/', 'settings']);

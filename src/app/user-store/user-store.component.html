@@ -2,7 +2,11 @@
 
   <form [formGroup]="form" (ngSubmit)="submit()" class="login-form form-horizontal" >
     <div class="contentBox">
+<<<<<<< HEAD
       <h3 class="contentBoxTop">회원 등록</h3>
+=======
+      <h3 class="contentBoxTop">가맹점 등록</h3>
+>>>>>>> 3d03b9581c0a340111d9fb78398d3497725e8dab
 
       <fieldset>
         <div class="form-group">
@@ -13,7 +17,11 @@
         </div>
 
         <div class="form-group" [ngClass]="{'has-error': formErrors.username}">
+<<<<<<< HEAD
           <label for="username" class="col-sm-3 control-label">회원아아디*</label>
+=======
+          <label for="username" class="col-sm-3 control-label">가맹점아이디*</label>
+>>>>>>> 3d03b9581c0a340111d9fb78398d3497725e8dab
           <div class="col-sm-9">
             <input class="form-control" type="text" formControlName="username" id="username">
             <span *ngIf="formErrors.username" class="help-block">{{formErrors.username}}</span>

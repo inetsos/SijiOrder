@@ -17,11 +17,15 @@
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">             
           <ul class="nav navbar-nav">    
-             
-            <li  *ngIf="authService.isLoggedIn() && !authService.isStore()"  [routerLinkActive]="['active']">
+            <!-- <li  *ngIf="authService.isLoggedIn() && !authService.isStore()"  [routerLinkActive]="['active']">
                 <a [routerLink]="['/','myorders']">내 주문</a>
+<<<<<<< HEAD
             </li>
             <!-- <li  *ngIf="authService.isLoggedIn() && authService.isStore()"  [routerLinkActive]="['active']">
+=======
+            </li> -->
+            <li  *ngIf="authService.isLoggedIn() && authService.isStore()"  [routerLinkActive]="['active']">
+>>>>>>> 3d03b9581c0a340111d9fb78398d3497725e8dab
               <a [routerLink]="['/','menus']">메뉴관리</a>
             </li>
             <li  *ngIf="authService.isLoggedIn() && authService.isStore()"  [routerLinkActive]="['active']">
@@ -32,6 +36,16 @@
             </li> -->
           </ul>
           <ul class="nav navbar-nav navbar-right">
+<<<<<<< HEAD
+=======
+            <li *ngIf="!authService.isLoggedIn()" [routerLinkActive]="['active']">
+              <a [routerLink]="['/','users','signup']">회원등록</a>
+            </li>          
+            <li *ngIf="authService.isLoggedIn() && authService.isStore()" [routerLinkActive]="['active']">
+                <a [routerLink]="['/','users', authService.getCurrentUser().username, 'update']">회원정보수정</a>
+            </li>
+
+>>>>>>> 3d03b9581c0a340111d9fb78398d3497725e8dab
             <!-- <li *ngIf="!authService.isLoggedIn()" [routerLinkActive]="['active']">
               <a [routerLink]="['/','users', 'store']">가맹점등록</a>
             </li>
@@ -45,8 +59,13 @@
               <a [routerLink]="['/','users','signup']">회원등록</a>
             </li>          
             <li *ngIf="authService.isLoggedIn() && !authService.isStore()" [routerLinkActive]="['active']">
+<<<<<<< HEAD
                 <a [routerLink]="['/','users', authService.getCurrentUser().username, 'update']">회원정보수정</a>
             </li>
+=======
+                <a [routerLink]="['/','users', authService.getCurrentUser().username, 'edit']">회원정보</a>
+            </li> -->
+>>>>>>> 3d03b9581c0a340111d9fb78398d3497725e8dab
             <li *ngIf="!authService.isLoggedIn()" [routerLinkActive]="['active']">
               <a [routerLink]="['/','login']">로그인</a>
             </li>

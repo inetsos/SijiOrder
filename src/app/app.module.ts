@@ -56,7 +56,6 @@ import { UserShowComponent } from './user-show/user-show.component';
 import { MenuIndexComponent } from './menu-index/menu-index.component';
 import { MenuNewComponent } from './menu-new/menu-new.component';
 import { MenuEditComponent } from './menu-edit/menu-edit.component';
-import { StoresComponent } from './stores/stores.component';
 
 import { SettingsComponent } from './settings/settings.component';
 import { SettingsAddComponent } from './settings-add/settings-add.component';
@@ -80,7 +79,6 @@ import { SignUpUpdateComponent } from './sign-up-update/sign-up-update.component
     MenuIndexComponent,
     MenuNewComponent,
     MenuEditComponent,
-    StoresComponent,
     SettingsComponent,
     SettingsAddComponent,
     StoresIndexComponent,

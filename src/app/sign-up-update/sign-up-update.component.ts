@@ -30,6 +30,10 @@ export class SignUpUpdateComponent implements OnInit {
   formErrors = {
     'currentPassword': '',
     'username': '',
+<<<<<<< HEAD
+=======
+    'storename': '',
+>>>>>>> 3d03b9581c0a340111d9fb78398d3497725e8dab
     'phone': '',
     'email': '',
     'newPassword': '',
@@ -38,7 +42,14 @@ export class SignUpUpdateComponent implements OnInit {
   formErrorMessages = {
     'username': {
       'required': '회원아이디를 입력하세요.',
+<<<<<<< HEAD
       'pattern': '8~16자의 영문 숫자 조합입니다.',
+=======
+      'pattern': '6~16자의 영문 숫자 조합입니다.',
+    },
+    'storename': {
+      'required': '상호를 입력하세요.',
+>>>>>>> 3d03b9581c0a340111d9fb78398d3497725e8dab
     },
     'currentPassword': {
       'required': '현재 비밀번호를 입력하세요.',
@@ -60,9 +71,15 @@ export class SignUpUpdateComponent implements OnInit {
   buildForm(): void {
     this.form = this.formBuilder.group({
       currentPassword: ['', [Validators.required]],
+<<<<<<< HEAD
       username: [this.user.username, [Validators.required, Validators.pattern(/^.{8,16}$/)]],
       name: [this.user.name],
       storeName: [this.user.storeName],
+=======
+      username: [this.user.username, [Validators.required, Validators.pattern(/^.{6,16}$/)]],
+      name: [this.user.name],
+      storeName: [this.user.storeName, [Validators.required]],
+>>>>>>> 3d03b9581c0a340111d9fb78398d3497725e8dab
       phone: [this.user.phone, [Validators.required, Validators.pattern(/^\d{3}-\d{3,4}-\d{4}$/)]],
       email: [this.user.email, [Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]],
       roadAddr: [this.user.roadAddr],
@@ -160,4 +177,8 @@ export class SignUpUpdateComponent implements OnInit {
     this.addresses = [];
     this.result_view = false;
   }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3d03b9581c0a340111d9fb78398d3497725e8dab
 }

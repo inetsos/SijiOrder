@@ -3,7 +3,11 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
+<<<<<<< HEAD
     "SijiOrder-order": {
+=======
+    "SijiOrder-shop": {
+>>>>>>> 3d03b9581c0a340111d9fb78398d3497725e8dab
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -13,7 +17,11 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+<<<<<<< HEAD
             "outputPath": "dist/SijiOrder-order",
+=======
+            "outputPath": "dist/SijiOrder-shop",
+>>>>>>> 3d03b9581c0a340111d9fb78398d3497725e8dab
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -50,18 +58,30 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
+<<<<<<< HEAD
             "browserTarget": "SijiOrder-order:build"
           },
           "configurations": {
             "production": {
               "browserTarget": "SijiOrder-order:build:production"
+=======
+            "browserTarget": "SijiOrder-shop:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "SijiOrder-shop:build:production"
+>>>>>>> 3d03b9581c0a340111d9fb78398d3497725e8dab
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
+<<<<<<< HEAD
             "browserTarget": "SijiOrder-order:build"
+=======
+            "browserTarget": "SijiOrder-shop:build"
+>>>>>>> 3d03b9581c0a340111d9fb78398d3497725e8dab
           }
         },
         "test": {
@@ -95,7 +115,11 @@
         }
       }
     },
+<<<<<<< HEAD
     "SijiOrder-order-e2e": {
+=======
+    "SijiOrder-shop-e2e": {
+>>>>>>> 3d03b9581c0a340111d9fb78398d3497725e8dab
       "root": "e2e/",
       "projectType": "application",
       "architect": {
@@ -103,11 +127,19 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
+<<<<<<< HEAD
             "devServerTarget": "SijiOrder-order:serve"
           },
           "configurations": {
             "production": {
               "devServerTarget": "SijiOrder-order:serve:production"
+=======
+            "devServerTarget": "SijiOrder-shop:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "SijiOrder-shop:serve:production"
+>>>>>>> 3d03b9581c0a340111d9fb78398d3497725e8dab
             }
           }
         },
@@ -123,5 +155,9 @@
       }
     }
   },
+<<<<<<< HEAD
   "defaultProject": "SijiOrder-order"
+=======
+  "defaultProject": "SijiOrder-shop"
+>>>>>>> 3d03b9581c0a340111d9fb78398d3497725e8dab
 }

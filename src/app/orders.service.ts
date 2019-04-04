@@ -43,6 +43,7 @@ export class OrdersService {
     .then(this.utilService.checkSuccess)
     .then(response => {
       return response.data as Order[];
+<<<<<<< HEAD
     })
     .catch(this.utilService.handleApiError);
   }
@@ -54,6 +55,8 @@ export class OrdersService {
     .then(this.utilService.checkSuccess)
     .then(response => {
       return response.data as Order[];
+=======
+>>>>>>> 3d03b9581c0a340111d9fb78398d3497725e8dab
     })
     .catch(this.utilService.handleApiError);
   }
@@ -77,6 +80,7 @@ export class OrdersService {
     .then(response => {
       // console.log(response);
       return response.data as Order;
+<<<<<<< HEAD
     })
     .catch(this.utilService.handleApiError);
   }
@@ -88,6 +92,8 @@ export class OrdersService {
     .then(response => {
       // console.log(response);
       return response.data as Order[];
+=======
+>>>>>>> 3d03b9581c0a340111d9fb78398d3497725e8dab
     })
     .catch(this.utilService.handleApiError);
   }

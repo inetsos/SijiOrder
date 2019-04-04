@@ -7,7 +7,8 @@
   <div >
     <ul style="font-size: 16px;">
       <li *ngFor="let user of users">
-        <a [routerLink]="['/','stores',user.username]">{{user.storeName}}</a>
+        <!-- <a [routerLink]="['/','stores',user.username]">{{user.storeName}}</a> -->
+        <a [routerLink]="['/','orders']">{{user.storeName}}</a>
       </li>
     </ul>
   </div>

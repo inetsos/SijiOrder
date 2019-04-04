@@ -1,4 +1,5 @@
 <div class="page page-settings">
+<<<<<<< HEAD
   <!-- <div class="buttons">
     <a class="btn btn-default" href="/settings/add">설정등록</a>
   </div> -->
@@ -23,7 +24,58 @@
         </td>
         <!-- <td>{{setting.createdAt | date: 'yyyy-MM-dd' }}</td> -->
         <td><button class="btn btn-default btn-sm" (click)="setContent(setting)">설정</button></td>
+=======
+    <h4 *ngIf="authService.isLoggedIn()"><b>{{user.storeName}}</b></h4>
+  <!-- <div class="buttons">
+    <a class="btn btn-default" href="/settings/add">설정등록</a>
+  </div> -->
+  <div align="right">
+    <button class="btn btn-default btn-sm" (click)="createSetting()">설정생성</button>
+  </div>
+
+  <table class="table table-striped" border="0">
+    <tbody>
+      <tr *ngIf="!settings || settings.length === 0">
+        <td class="noData">등록된 설정이 없습니다.</td>
+>>>>>>> 3d03b9581c0a340111d9fb78398d3497725e8dab
       </tr>
+      <ng-container  *ngFor="let setting of settings" >
+          <ng-container *ngIf="setting.type==='모바일주문';else other_content">
+            <tr>
+              <td>
+                <div style="padding: 10px">
+                  <div class="row" style="height:32px;">
+                    <b>{{setting.type}}</b>
+                  </div>
+                  <div class="row" style="height:32px;">
+                    <input style="width: 100%;" [(ngModel)]="setting.content" type="text" readonly/>
+                  </div>
+                  <div class="row" style="height:32px;">
+                    <button class="btn btn-default btn-sm" (click)="setContent(setting, '사용')">사용</button>&nbsp;
+                    <button class="btn btn-default btn-sm" (click)="setContent(setting, '사용하지 않음')">사용하지 않음</button>
+                </div>
+              </div>
+              </td>
+            </tr>
+          </ng-container>
+          <ng-template #other_content>
+            <tr>
+                <td>
+                  <div style="padding: 10px">
+                    <div class="row" style="height:32px;">
+                      <b>{{setting.type}}</b>
+                    </div>
+                    <div class="row" style="height:32px;">
+                      <input style="width: 100%;" [(ngModel)]="setting.content" type="text"/>
+                    </div>
+                    <div class="row" style="height:32px;">
+                      <button class="btn btn-default btn-sm" (click)="setContent(setting)">설정</button>
+                    </div>
+                  </div>
+                </td>
+            </tr>
+          </ng-template>
+      </ng-container>
     </tbody>
   </table>
  
