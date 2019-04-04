@@ -1,8 +1,8 @@
 <mat-card>    
     <!-- Title of an Card --> 
-      <mat-card-subtitle>    
+      <mat-card-title>    
           <b>회원정보수정</b>
-      </mat-card-subtitle>  
+      </mat-card-title>  
   
       <mat-card-content>    
           <form [formGroup]="form" (ngSubmit)="submit()">    
@@ -80,7 +80,7 @@
                   <tr>    
                       <td>    
                           <mat-form-field class="demo-full-width">    
-                              <textarea matInput formControlName="roadAddr" placeholder="도로명주소" matTextareaAutosize matAutosizeMinRows="2" matAutosizeMaxRows="5"></textarea>    
+                              <textarea matInput formControlName="roadAddr" placeholder="도로명주소" matTextareaAutosize matAutosizeMinRows="3" matAutosizeMaxRows="5"></textarea>    
                           </mat-form-field>    
                       </td>    
                   </tr>   
@@ -88,7 +88,7 @@
                   <tr>    
                       <td>    
                           <mat-form-field class="demo-full-width">    
-                              <textarea matInput formControlName="jibunAddr" placeholder="지번주소" matTextareaAutosize matAutosizeMinRows="2" matAutosizeMaxRows="5"></textarea>    
+                              <textarea matInput formControlName="jibunAddr" placeholder="지번주소" matTextareaAutosize matAutosizeMinRows="3" matAutosizeMaxRows="5"></textarea>    
                           </mat-form-field>    
                       </td>    
                   </tr>  
@@ -96,7 +96,7 @@
                   <tr>    
                       <td>    
                           <mat-form-field class="demo-full-width">    
-                              <textarea matInput formControlName="detailAddr" placeholder="상세주소" matTextareaAutosize matAutosizeMinRows="2" matAutosizeMaxRows="5"></textarea>    
+                            <input matInput formControlName="detailAddr" placeholder="상세주소" >
                           </mat-form-field>    
                       </td>    
                   </tr>  

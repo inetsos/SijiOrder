@@ -77,15 +77,15 @@ export class MyordersComponent implements OnInit {
   }
 
   totalOrders() {
-    if (this.totalOrder) {
+    // if (this.totalOrder) {
       this.ordersService.getMyOrders(this.user.username)
       .then((orders) => {
         this.orders = orders;
       })
       .catch((err) => null);
-    } else {
-      this.todayOrders();
-    }
+    // } else {
+    //   this.todayOrders();
+    // }
   }
 
   setTable(order: Order, status: string) {

@@ -1,6 +1,8 @@
 <div class="page page-orders">
-  
-  <h4 *ngIf="user"><b>{{user.storeName}}</b></h4>
+    
+  <div id='top' #topRef></div>
+
+  <h3 *ngIf="user"><b>{{shop.storeName}}</b></h3>
 
   <ng-container *ngIf="user && !mobileOrder && mobileOrder !== '사용';else other_content">
     <div align='center'>
@@ -10,48 +12,112 @@
     고맙습니다.
   </div>
   </ng-container>
+
   <ng-template #other_content>
 
-    <div style="float: right" *ngIf="authService.isLoggedIn() === false"> 
-      <b>비회원주문</b> <input type="checkbox" [(ngModel)]="nonmember" />
+    <div class="text-right" style="margin-bottom: 8px">
+      <button [ngx-scroll-to]="ordersheetRef" class="btn btn-primary btn-sm">주문서 보기</button>
     </div>
-    <h5><b>주문서</b></h5>
-    <ng-container *ngIf="nonmember === true">
-      <table class="table">
-        <tr>
-          <td>
-            전화번호: <input style="width: 140px;" [(ngModel)]="phoneno" type="text" > (숫자만)<br/>
-          </td>
-        </tr>
-        <tr>
-          <td>
-              비밀번호: &nbsp;<input style="width: 140px; " [(ngModel)]="password" type="password">
-          </td>
-        </tr>
-        <tr>
-          <td>
-            기억하기 <input type="checkbox" [(ngModel)]="memory" (ngModelChange)="storeMember() "/>
-          </td>
-        </tr>
-      </table>
-    </ng-container>
 
-    <div id='ordersheet'>
-    <table class="table table-striped menus" border="0">
+    <div  style="height: 30px;">
+      <span *ngFor="let classify of classifies">
+        <!-- <a [routerLink]="['/stores', shopID]" [queryParams]="{ classify: classify}" role="button"><b>{{classify}}</b></a>&nbsp; -->
+        <a role="button" (click)="setClassify(classify)" ><b>{{classify}}</b></a>&nbsp;
+      </span>
+    </div>
+
+    <table class="table table-striped" border="0">
+      <tbody>
+        <tr *ngIf=" !menus || menus.length === 0">
+          <td class="noData" colspan="5">등록된 메뉴가 없습니다.</td>
+        </tr>
+        <ng-container *ngFor="let menu of menus">
+
+          <ng-container *ngIf="menu.classify === classify && classify !== '전체'">
+            <tr>
+              <td>
+                  <ng-container *ngIf="menu.image === 1">
+                    <div class="row text-center" style="margin-bottom: 16px"  >
+                      <img src="\assets\image\{{shopID}}\{{menu.name}}.png" style="width: 300px; text-align: center" alt="{{menu.name}} 이미지 준비중" >
+                    </div>
+                    <hr>
+                  </ng-container>
+                  <div *ngIf="menu.description !==''">
+                    {{menu.description}}
+                    <hr>
+                  </div>
+                  <div class="row" style="height:36px;">
+                    <div class="col-xs-7 vcenter"><b>{{menu.name}}</b></div>
+                    <ng-container *ngIf="menu.price > 0">
+                      <div class="col-xs-2 vcenter text-right"><b>{{menu.price | number}}</b></div>
+                      <div class="col-xs-2 vcenter text-right"><button type="button" class="btn btn-default btn-sm" (click)="orderMenu(menu, '')" style="width: 60px"> 주문 </button></div>
+                    </ng-container>
+                  </div>
+                  <ng-container *ngIf="menu.premia.length > 0">
+                  <div class="row" *ngFor="let premium of menu.premia" style="height:36px;">
+                    <div class="col-xs-7 vcenter"><b>{{premium.size}} </b></div>
+                    <div class="col-xs-2 vcenter text-right"><b>{{premium.premium_price | number}} </b></div>
+                    <div class="col-xs-2 vcenter text-right"><button type="button" class="btn btn-default btn-sm" (click)="orderMenu(menu, premium.size)" style="width: 60px"> 주문 </button></div>
+                  </div>
+                  </ng-container>
+              </td>
+            </tr>
+          </ng-container>
+
+          <ng-container *ngIf="classify === '전체'">
+            <tr>
+              <td>
+                  <ng-container *ngIf="menu.image === 1">
+                    <div class="row text-center" style="margin-bottom: 16px">
+                      <img src="\assets\image\{{shopID}}\{{menu.name}}.png" style="width: 300px; text-align: center" alt="{{menu.name}} 이미지 준비중 ">
+                    </div>
+                    <hr>
+                  </ng-container>
+                  <div *ngIf="menu.description !==''">
+                    {{menu.description}}
+                    <hr>
+                  </div>
+                  <div class="row" style="height:36px;">
+                    <div class="col-xs-7 vcenter"><b>{{menu.name}}</b></div>
+                    <ng-container *ngIf="menu.price > 0">
+                      <div class="col-xs-2 vcenter text-right"><b>{{menu.price | number}}</b></div>
+                      <div class="col-xs-2 vcenter text-right"><button type="button" class="btn btn-default btn-sm" (click)="orderMenu(menu, '')" style="width: 60px"> 주문 </button></div>
+                    </ng-container>
+                  </div>
+                  <ng-container *ngIf="menu.premia.length > 0">
+                  <div class="row" *ngFor="let premium of menu.premia" style="height:36px;">
+                    <div class="col-xs-7 vcenter"><b>{{premium.size}} </b></div>
+                    <div class="col-xs-2 vcenter text-right"><b>{{premium.premium_price | number}} </b></div>
+                    <div class="col-xs-2 vcenter text-right"><button type="button" class="btn btn-default btn-sm" (click)="orderMenu(menu, premium.size)" style="width: 60px"> 주문 </button></div>
+                  </div>
+                  </ng-container>
+              </td>
+            </tr>
+          </ng-container>
+
+        </ng-container>
+      </tbody>
+    </table>
+    
+    <div id='ordersheet' #ordersheetRef>      
+    <hr>
+
+    <h4><b>주문서</b></h4>
+    <table class="table">
       <thead>
         <tr>
           <td colspan="4">
             <div *ngIf="ordering.ordermenu?.length > 0">
-              <b>주문서 : {{ordering.shopname}} &nbsp;&nbsp;상태: {{ordering.status}}</b> <br/>
-              주문번호: {{ordering._id }} - {{ordering.orderNo}}<br /> 
-                {{ ordering.createdAt | date: 'yyyy-MM-dd HH:mm' }} <br/>
+              <b>주문서: {{ordering.shopname}} &nbsp;&nbsp;상태: {{ordering.status}}</b> <br/>
+              주문번호: {{ordering.orderNo}}<br /> 
+              {{ ordering.createdAt | date: 'yyyy-MM-dd HH:mm' }}<br/>
             </div>
           </td>
         </tr>
         <tr>
-          <th style="width:35%" class="text-center">맛있는 메뉴</th>
+          <th style="width:50%">맛있는 메뉴</th>
           <th style="width:15%" class="text-center">가격</th>
-          <th style="width:30%" class="text-center">수량</th>
+          <th style="width:15%" class="text-center">수량</th>
           <th style="width:20%" class="text-center">금액</th>
         </tr>
       </thead>
@@ -61,47 +127,93 @@
             <td class="noData" colspan="4">등록된 주문이 없습니다.</td>
           </tr>
         </ng-container>
-        <ng-container  *ngIf="ordering !== null">
-          <tr *ngIf = "!ordering.ordermenu">
-            <td class="noData" colspan="3">등록된 메뉴가 없습니다.</td>
-          </tr>        
-          <ng-container *ngFor="let ordermenu of ordering.ordermenu; let i=index">
-            <tr>            
-              <td>{{ordermenu.name}}</td>
-              <td align="right">{{ordermenu.price | number}}</td>
-              <td align="center">
-                <input style="width: 24px; text-align: center" [(ngModel)]="ordermenu.number" type="text" readonly/>
-                <button style="width: 24px" (click)="addNumber(i)">+</button>
-                <button style="width: 24px" (click)="subsNumber(i)">-</button>
-              </td>
-              <td align="right"> {{ordermenu.sum | number}}</td>
-            </tr>
-          </ng-container>
+        <ng-container *ngFor="let ordermenu of ordering.ordermenu; let i=index">
+          <tr>            
+            <td>{{ordermenu.name}}</td>
+            <td class="text-right">{{ordermenu.price | number}}</td>
+            <td class="text-right">{{ordermenu.number | number}} </td>
+            <td class="text-right"> {{ordermenu.sum | number}}</td>
+          </tr>
           <tr>
-            <td colspan="4" align="right">
-              <b>합계: {{ getTotal(ordering) | number }}</b>
+            <td colspan="4" class="text-center">
+              수량: &nbsp;               
+              <button class="btn btn-default btn-sm" style="width: 48px;" (click)="subsNumber(i)"> - </button>
+              <input style="width: 48px; height: 30px; margin: auto; text-align: center; vertical-align: middle;" [(ngModel)]="ordermenu.number" type="text" readonly/>
+              <button class="btn btn-default btn-sm" style="width: 48px;" (click)="addNumber(i)"> + </button>
             </td>
           </tr>
         </ng-container>
+        <tr>
+          <td colspan="4" class="text-right">
+            <b>합계: {{ getTotal(ordering) | number }}</b>
+          </td>
+        </tr>        
       </tbody>
-    </table>
+    </table>    
+    <div *ngIf="ordering !== null" style="text-align: right;"> 
+        <button class="btn btn-success btn-sm" [ngx-scroll-to]="topRef">계속주문</button>
     </div>
 
     <hr>
-    <div *ngIf="ordering !== null" style="text-align: center"> 
-      <div class="row" style="height:34px;">
-        테이블: <input style="width: 48px; height: 30px; text-align: center" [(ngModel)]="ordering.tableNo" type="text"/>&nbsp;
-        <button class="btn btn-danger btn-sm" (click)="setTable(ordering)">지정</button> (0:예약)
+    
+    <!-- <div *ngIf="authService.isLoggedIn() === false"> 
+      <b>비회원주문</b> <input type="checkbox" [(ngModel)]="nonmember" />
+    </div> -->
+
+    <!-- <ng-container *ngIf="nonmember === true"> -->
+    <div>
+      <div style="height: 30px">
+          전화번호: <input style="width: 140px;" [(ngModel)]="phoneno" type="text" > (숫자만)<br/>
       </div>
+      <div style="height: 30px">
+          비밀번호: <input style="width: 140px; " [(ngModel)]="password" type="password">
+      </div>
+      <div>
+          <input matInput placeholder="주소검색" [(ngModel)]="keyword" [ngModelOptions]="{standalone: true}">
+          <button mat-icon-button type="button" (click)="queryAddr()"><mat-icon>search</mat-icon></button>&nbsp;&nbsp;&nbsp;&nbsp;
+          <a (click)="result_view = false">지우기</a>
+          <br/>
+          <small>세종대로 209,국립중앙박물관,상암동 1595</small> 
+      </div>
+      <ng-container *ngIf="result_view === true" >
+          <hr>
+          <ng-container *ngFor=" let address of addresses; let i=index" >
+            <div>
+              <a (click)="setAddr(address)">
+                  {{ address.roadAddr}} <br/>
+                  <small>{{ address.jibunAddr}}</small>
+              </a>
+            </div>
+            <hr>
+        </ng-container>
+      </ng-container>
+      <div>
+          <textarea style="width: 100%" [(ngModel)]="roadAddr" placeholder="도로명주소" matTextareaAutosize matAutosizeMinRows="3" matAutosizeMaxRows="5" readonly></textarea>
+      </div>
+      <div>
+          <textarea style="width: 100%" [(ngModel)]="jibunAddr" placeholder="지번주소" matTextareaAutosize matAutosizeMinRows="3" matAutosizeMaxRows="5" readonly></textarea>
+      </div>
+      <div>
+          <input  style="width: 100%" [(ngModel)]="detailAddr" placeholder="상세주소" >
+      </div>
+    </div>
+      
+    <div *ngIf="ordering !== null" style="text-align: center; margin-top: 16px"> 
       <div class="row" style="height:34px;">
+        테이블: <input style="width: 48px; height: 30px; text-align: center; vertical-align: middle;" [(ngModel)]="ordering.tableNo" type="text"/>
+        <button class="btn btn-danger btn-sm" (click)="setTable(ordering)">지정</button>&nbsp;&nbsp;
+        <button class="btn btn-success btn-sm" [ngx-scroll-to]="topRef">계속주문</button>&nbsp;&nbsp;
+        <button class="btn btn-primary btn-sm" (click)="submitOrder(ordering)">주문하기</button>
+      </div>
+      <!-- <div class="row" style="height:34px;">
         <button class="btn btn-default btn-sm" (click)="cancelOrder(ordering)">주문취소</button>&nbsp;
         <button class="btn btn-success btn-sm" (click)="showOrder()">주문보기</button>&nbsp;
         <button class="btn btn-primary btn-sm" (click)="submitOrder(ordering)">주문하기</button>
-      </div>
+      </div> -->
     </div>
-
+  
     <!-- ==== 주문보기==== -->
-    <ng-container *ngIf="isshow && todayOrders && todayOrders?.length > 0">
+    <!-- <ng-container *ngIf="isshow && todayOrders && todayOrders?.length > 0">
       <ng-container *ngFor="let order of todayOrders; let i=index">
       <br/>
       <table class="table table-striped menus" border="1" style="border: 1px solid #e0e0e0">
@@ -126,13 +238,13 @@
           <ng-container *ngFor="let ordermenu of order.ordermenu; let i=index">
             <tr>            
               <td>{{ordermenu.name}}</td>
-              <td align="right">{{ordermenu.price | number}}</td>
-              <td align="right">{{ordermenu.number | number}}</td>
-              <td align="right">{{ordermenu.sum | number}}</td>
+              <td class="text-right">{{ordermenu.price | number}}</td>
+              <td class="text-right">{{ordermenu.number | number}}</td>
+              <td class="text-right">{{ordermenu.sum | number}}</td>
             </tr>
           </ng-container>
           <tr>
-            <td colspan="4" align="right">
+            <td colspan="4" class="text-right">
               <b>합계: {{ getTotal(order) | number }}</b>
             </td>
           </tr>
@@ -140,65 +252,7 @@
       </table>
       </ng-container>
     </ng-container>
-
-    <hr>
-
-    <!-- <div align="right" style="margin-bottom: 10px">
-      <a [routerLink]="['/stores', username]" [queryParams]="{ classify: classify}" role="button" class="btn btn-primary btn-sm" fragment="ordersheet">주문서</a>
-    </div> -->
-    <div  style="height: 30px;">
-      <span *ngFor="let classify of classifies">
-        <a [routerLink]="['/stores', username]" [queryParams]="{ classify: classify}" role="button"><b>{{classify}}</b></a>&nbsp;
-      </span>
-    </div>
-
-    <table class="table table-striped menus" border="0">
-      <tbody>
-        <tr *ngIf=" !menus || menus.length === 0">
-          <td class="noData" colspan="5">등록된 메뉴가 없습니다.</td>
-        </tr>
-        <ng-container *ngFor="let menu of menus">
-          <ng-container *ngIf="menu.classify === classify && classify !== '전체'">
-            <tr>
-              <td style="width:50%; text-align: center" >
-                <img src="\assets\image\{{menu.name}}.png" width="144" height="126" alt="menu.name">
-              </td>
-              <td style="width:50%; vertical-align: bottom; text-align: center"  >
-                <div class="row" style="height:55px;">
-                {{menu.name}} <b>{{menu.price | number}}</b><br/>
-                <button type="button" class="btn btn-default btn-xs" (click)="orderMenu(menu, '')" style="width: 120px"> 주문하기 </button>
-                </div>
-                <div class="row" style="height:55px;">
-                <ng-container *ngFor="let premium of menu.premia">
-                  {{premium.size}} <b>{{premium.premium_price | number}}</b> <br/>
-                  <button type="button" class="btn btn-default btn-xs" (click)="orderMenu(menu, premium.size)" style="width: 120px"> 주문하기 </button>
-                </ng-container>
-                </div>
-              </td>
-            </tr>
-          </ng-container>
-          <ng-container *ngIf="classify === '전체'">
-            <tr>
-              <td style="width:50%;  text-align: center" >
-                <img src="\assets\image\{{menu.name}}.png" width="144" height="126" alt="menu.name">
-              </td>
-              <td style="width:50%; vertical-align: bottom; text-align: center"  >
-                <div class="row" style="height:55px;">
-                  {{menu.name}} <b>{{menu.price | number}}</b><br/>
-                  <button type="button" class="btn btn-default btn-xs" (click)="orderMenu(menu, '')" style="width: 120px"> 주문하기 </button>
-                </div>
-                <div class="row" style="height:55px;">
-                  <ng-container *ngFor="let premium of menu.premia">
-                    {{premium.size}} <b>{{premium.premium_price | number}}</b> <br/>
-                    <button type="button" class="btn btn-default btn-xs" (click)="orderMenu(menu, premium.size)" style="width: 120px"> 주문하기 </button>
-                  </ng-container>
-                </div>
-              </td>
-            </tr>
-          </ng-container>
-        </ng-container>
-      </tbody>
-    </table>
-  </ng-template>
+  </div>
+  </ng-template> -->
 
 </div>

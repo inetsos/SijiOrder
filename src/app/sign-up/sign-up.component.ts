@@ -144,5 +144,4 @@ export class SignUpComponent implements OnInit {
     this.addresses = [];
     this.result_view = false;
   }
-
 }

@@ -5,6 +5,7 @@ export interface Menu {
     name: string;
     price: number;
     description: string;
+    image: number;
     username: string;
     premia: Premium[];
 }

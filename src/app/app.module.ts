@@ -3,9 +3,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { MatProgressBarModule } from '@angular/material';
 
 import {
+  MatProgressBarModule,
   MatButtonModule,
   MatMenuModule,
   MatToolbarModule,
@@ -23,6 +23,8 @@ import {
   ErrorStateMatcher,
   ShowOnDirtyErrorStateMatcher
 } from '@angular/material';
+
+import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 
 import { AppComponent } from './app.component';
 
@@ -107,7 +109,8 @@ import { SignUpUpdateComponent } from './sign-up-update/sign-up-update.component
     MatRadioModule,
     MatSelectModule,
     MatOptionModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    ScrollToModule.forRoot()
   ],
   exports: [
     MatButtonModule,
