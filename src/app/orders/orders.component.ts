@@ -8,7 +8,6 @@ import { AuthService } from '../auth.service';
 import { SettingService } from '../setting.service';
 import { Setting } from '../setting';
 import { OrdersService } from '../orders.service';
-import { OrderEx } from '../orderEx';
 import { Order } from '../order';
 import { User } from '../user';
 import { FcmsService } from '../fcms.service';
@@ -31,7 +30,7 @@ export class OrdersComponent implements OnInit {
   navigationSubscription;
   today = new Date();
 
-  orders = [] as OrderEx[];
+  orders = [] as Order[];
   orderOnly = false;
   orderAccept = false;
   orderReady = false;
@@ -53,6 +52,12 @@ export class OrdersComponent implements OnInit {
   }
 
   ngOnInit() {
+    // this.user = this.authService.getCurrentUser();
+    // this.settingService.index(this.user.username).then((settings) => this.settings = settings);
+    // this.todayOrders();
+
+    // 10초 타이머를 이용하여 주문을 자동 로드한다.
+    setInterval(() => { this.todayOrders(); }, 10000);
   }
 
   todayOrders() {
@@ -61,7 +66,9 @@ export class OrdersComponent implements OnInit {
     const today = this.today.getFullYear() + '-' + this._to2digit(this.today.getMonth() + 1) + '-' + this._to2digit(this.today.getDate());
 
     this.ordersService.getTodayOrders(storename, today)
-    .then((orders) => this.orders = orders )
+    .then((orders) => {
+      this.orders = orders;
+     })
     .catch((err) => null);
   }
 
@@ -69,7 +76,7 @@ export class OrdersComponent implements OnInit {
     return ('00' + n).slice(-2);
   }
 
-  getTotal(order: OrderEx) {
+  getTotal(order: Order) {
 
     if (!order.ordermenu) {
       return 0;
@@ -82,34 +89,9 @@ export class OrdersComponent implements OnInit {
     return total;
   }
 
-  getOrder(orderEx: OrderEx) {
-
-    const order = {} as Order;
-
-    order._id = orderEx._id;
-    order.storename = orderEx.storename;
-    order.shopname = orderEx.shopname;
-    order.username = orderEx.username;
-    order.tableNo = orderEx.tableNo;
-    order.orderNo = orderEx.orderNo;
-    order.status = orderEx.status;
-    order.createdAt = orderEx.createdAt;
-    order.orderedAt = orderEx.orderedAt;
-    order.confirmedAt = orderEx.confirmedAt;
-    // console.log('2.', this.ordering);
-    order.ordermenu = [];
-    for (let i = 0 ; i < orderEx.ordermenu.length; i++) {
-      order.ordermenu[i] = orderEx.ordermenu[i]._id;
-    }
-
-    return order;
-  }
-
-  confirmOrder(orderEx: OrderEx, status: string) {
+  confirmOrder(order: Order, status: string) {
 
     // 문자 전송 체크에 따라 문자 전송을 한다.
-    const order = this.getOrder(orderEx);
-
     order.status = status;
     this.ordersService.updateOrder(order._id, order)
     .then((saveordering) => {
@@ -176,9 +158,7 @@ export class OrdersComponent implements OnInit {
     }
   }
 
-  setTable(orderEx: OrderEx, status: string) {
-
-    const order = this.getOrder(orderEx);
+  setTable(order: Order, status: string) {
 
     // 테이블 번호가 바뀐 상태이므로 수정 호출
     this.ordersService.updateOrder(order._id, order)

@@ -5,6 +5,23 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MatProgressBarModule } from '@angular/material';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import {
+  MatButtonModule,
+  MatMenuModule,
+  MatToolbarModule,
+  MatIconModule,
+  MatCardModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatDatepicker,
+  MatNativeDateModule,
+  MatRadioModule,
+  MatSelectModule,
+  MatOptionModule,
+  MatSlideToggleModule,
+  ErrorStateMatcher,
+  ShowOnDirtyErrorStateMatcher
+} from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AuthGuard } from './auth.guard';
@@ -35,7 +52,6 @@ import { UserShowComponent } from './user-show/user-show.component';
 import { MenuIndexComponent } from './menu-index/menu-index.component';
 import { MenuNewComponent } from './menu-new/menu-new.component';
 import { MenuEditComponent } from './menu-edit/menu-edit.component';
-import { StoresComponent } from './stores/stores.component';
 
 import { SettingsComponent } from './settings/settings.component';
 import { SettingsAddComponent } from './settings-add/settings-add.component';
@@ -43,6 +59,9 @@ import { StoresIndexComponent } from './stores-index/stores-index.component';
 import { OrdersComponent } from './orders/orders.component';
 import { MyordersComponent } from './myorders/myorders.component';
 import { MenuAddComponent } from './menu-add/menu-add.component';
+import { MenuUpdateComponent } from './menu-update/menu-update.component';
+import { SignUpComponent } from './sign-up/sign-up.component';
+import { SignUpUpdateComponent } from './sign-up-update/sign-up-update.component';
 
 @NgModule({
   declarations: [
@@ -58,13 +77,15 @@ import { MenuAddComponent } from './menu-add/menu-add.component';
     MenuIndexComponent,
     MenuNewComponent,
     MenuEditComponent,
-    StoresComponent,
     SettingsComponent,
     SettingsAddComponent,
     StoresIndexComponent,
     OrdersComponent,
     MyordersComponent,
     MenuAddComponent,
+    MenuUpdateComponent,
+    SignUpComponent,
+    SignUpUpdateComponent,
   ],
   imports: [
     BrowserModule,
@@ -74,7 +95,35 @@ import { MenuAddComponent } from './menu-add/menu-add.component';
     FormsModule,
     ReactiveFormsModule,
     MatProgressBarModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatButtonModule,
+    MatMenuModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatNativeDateModule,
+    MatRadioModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatSlideToggleModule,
+  ],
+  exports: [
+    MatButtonModule,
+    MatMenuModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatCardModule,
+    BrowserAnimationsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatRadioModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatSlideToggleModule
   ],
   providers: [
     {

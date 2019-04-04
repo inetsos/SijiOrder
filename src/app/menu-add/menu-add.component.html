@@ -1,7 +1,12 @@
 <div class="page page-menus-new">
+
   <h4><b>{{user.storeName}}</b></h4>
-  
-  <form [formGroup]="myForm" novalidate (ngSubmit)="save(myForm)">
+
+  <div class="buttons">
+      <a [routerLink]="['/','menus']" class="btn btn-default">목록</a>
+  </div>
+
+  <form [formGroup]="myForm" (ngSubmit)="save(myForm.value)" class="form-horizontal">
     
     <h5 class="contentBoxTop">메뉴 추가</h5>
     <br/>
@@ -55,7 +60,7 @@
     <div class="form-group row">
       <div class="col-sm-3"></div>
       <div class="col-sm-9">
-        <button (click)="addPremium()"> 프리미엄 메뉴 추가</button>
+        <button type="button" class="btn btn-secondary" (click)="addPremium()"> 프리미엄 메뉴 추가</button>
       </div>
     </div>
 
@@ -69,20 +74,30 @@
         </div> -->
         <div [formGroupName]="i">
           <div class="form-group row">
-            <div class="col-sm-3"><button *ngIf="myForm.controls.premia.controls.length > 1" (click)="removePremium(i)">삭제</button></div>
+            <div class="col-sm-3">
+              <button class="btn btn-secondary" *ngIf="myForm.controls.premia.controls.length > 0" (click)="removePremium(i)">삭제</button>
+            </div>
             <div class="col-sm-3">
               <input class="form-control" type="text" formControlName="size" placeholder="규격" id="size">
             </div>
             <div class="col-sm-6">
-              <input class="form-control" type="text" formControlName="price" placeholder="가격" id="price">
+              <input class="form-control" type="text" formControlName="premium_price" placeholder="가격" id="premium_price">
             </div>
           </div>
         </div>
       </div>
     </div>
-    <small>*필수</small>
+    
+    <p>
+      <small>*필수</small>
+    </p>
+    <div *ngIf="errorResponse?.success===false" class="alert alert-danger">
+        {{errorResponse?.message}}
+        <!-- {{errorResponse?.errors.unhandled.errmsg}} -->
+    </div>
+
     <div style="float: right" >
-        <button type="submit" [disabled]="!myForm.valid">Submit</button>
+        <button type="submit" class="btn btn-primary" [disabled]="!myForm.valid">메뉴 추가</button>
     </div>
     
   </form>

@@ -6,7 +6,6 @@ import { AppDateAdapter, APP_DATE_FORMATS} from '../date.adapter';
 import { UserService } from '../user.service';
 import { AuthService } from '../auth.service';
 import { OrdersService } from '../orders.service';
-import { OrderEx } from '../orderEx';
 import { Order } from '../order';
 import { User } from '../user';
 
@@ -28,7 +27,7 @@ export class MyordersComponent implements OnInit {
   navigationSubscription;
   // today = new Date();
 
-  orders = [] as OrderEx[];
+  orders = [] as Order[];
   user: User;
 
   constructor(private router: Router, private authService: AuthService, private ordersService: OrdersService) {
@@ -63,7 +62,7 @@ export class MyordersComponent implements OnInit {
     return ('00' + n).slice(-2);
   }
 
-  getTotal(order: OrderEx) {
+  getTotal(order: Order) {
 
     if (!order.ordermenu) {
       return 0;

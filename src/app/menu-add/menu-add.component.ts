@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormGroup, FormArray, FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
+
 import { Menu } from '../menu';
 import { AuthService } from '../auth.service';
+import { MenuService } from '../menu.service';
 import { User } from '../user';
+import { ApiResponse } from '../api-response';
 
 @Component({
   selector: 'app-menu-add',
@@ -12,9 +16,11 @@ import { User } from '../user';
 export class MenuAddComponent implements OnInit {
 
   user: User;
+  errorResponse: ApiResponse;
   public myForm: FormGroup;
 
-  constructor(private _fb: FormBuilder, private authService: AuthService) { }
+  constructor(private _fb: FormBuilder, private authService: AuthService,
+    private menuService: MenuService, private router: Router) { }
 
   ngOnInit() {
     this.user = this.authService.getCurrentUser();
@@ -24,17 +30,15 @@ export class MenuAddComponent implements OnInit {
       name: ['', [Validators.required, Validators.pattern(/^.{2,20}$/)]],
       price: ['', [Validators.required, Validators.pattern(/^[0-9]*$/)]],
       description: [''],
-      premia: this._fb.array([
-        this.initPremium()
-      ])
+      premia: this._fb.array([])
     });
   }
 
   initPremium() {
     // initialize our address
     return this._fb.group({
-        size: '',
-        price: ''
+        size: [''],
+        premium_price: ['']
     });
   }
 
@@ -50,9 +54,20 @@ export class MenuAddComponent implements OnInit {
       control.removeAt(i);
   }
 
-  save(model: Menu) {
+  save(menu: Menu) {
     // call API to save customer
-    console.log(model);
+    console.log(menu);
+
+    const username = this.authService.getCurrentUser().username;
+    menu.username = username;
+    this.menuService.create(username, menu)
+    .then(data => {
+      this.router.navigate(['/menus']);
+    })
+    .catch(response => {
+      console.log(response);
+      this.errorResponse = response;
+    });
   }
 
 }

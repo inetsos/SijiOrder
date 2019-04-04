@@ -12,5 +12,15 @@ export interface Order {
     createdAt?: Date;
     orderedAt?: Date;
     confirmedAt?: Date;
-    ordermenu: string[];
+    ordermenu: OrderMenu[];
+}
+
+export interface OrderMenu {
+    orderNo: number;
+    menuNo: number;
+    classify: string;
+    name: string;
+    price: number;
+    number: number;
+    sum: number;
 }

@@ -41,7 +41,7 @@ export class SettingsComponent implements OnInit {
   createSetting() {
 
     // type, content, username
-    const types = ['메뉴분류순서', 'SMS발신폰번호', '열렸음/닫혔음', '접수문자', '차림문자'];
+    const types = ['메뉴분류순서', 'SMS발신폰번호', '모바일주문', '접수문자', '차림문자'];
     const promises = [];
 
     for (let i = 0; i < types.length; i++) {
@@ -75,10 +75,13 @@ export class SettingsComponent implements OnInit {
     return false;
   }
 
-  setContent(setting: Setting) {
+  setContent(setting: Setting, content: string) {
     if (setting.type === 'SMS발신폰번호') {
       setting.content = setting.content.replace(/[^0-9]/g, ''); // 숫자만 추출
+    } else if ( setting.type === '모바일주문') {
+      setting.content = content;
     }
+
     this.settingService.update(setting._id, setting)
       .then(data => {
         this.router.navigate(['/', 'settings']);

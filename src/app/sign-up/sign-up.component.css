@@ -1,0 +1,9 @@
+.mat-card-content {
+    font-size: 14px !important;
+    font-family: 'Malgun Gothic' !important;
+}
+
+.mat-card-title {
+    font-size:20px !important;
+    font-weight: 500 !important;
+}

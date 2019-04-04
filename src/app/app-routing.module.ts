@@ -17,25 +17,29 @@ import { LoginComponent } from './login/login.component';
 
 import { MenuIndexComponent } from './menu-index/menu-index.component';
 import { MenuNewComponent } from './menu-new/menu-new.component';
-import { MenuAddComponent } from './menu-add/menu-add.component';
 import { MenuEditComponent } from './menu-edit/menu-edit.component';
 import { MenusResolve } from './menus.resolve';
 import { MenuResolve } from './menu.resolve';
+import { MenuAddComponent } from './menu-add/menu-add.component';
+import { MenuUpdateComponent } from './menu-update/menu-update.component';
 
 import { OrdersComponent } from './orders/orders.component';
 import { MyordersComponent } from './myorders/myorders.component';
 
-import { StoresComponent } from './stores/stores.component';
 import { StoresIndexComponent } from './stores-index/stores-index.component';
 
 import { SettingsComponent } from './settings/settings.component';
 import { SettingsAddComponent } from './settings-add/settings-add.component';
+
+import { SignUpComponent } from './sign-up/sign-up.component';
+import { SignUpUpdateComponent } from './sign-up-update/sign-up-update.component';
 
 import { Error404Component } from './error404/error404.component';
 
 const routes: Routes = [
   { path: '',  component: WelcomeComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'users/signup',  component: SignUpComponent },
   { path: 'users/new',  component: UserNewComponent },
   { path: 'users/store',  component: UserStoreComponent },
   { path: 'users', canActivate: [AuthGuard],
@@ -61,6 +65,13 @@ const routes: Routes = [
           user: UserResolve
         }
       },
+      {
+        path: ':username/update',
+        component: SignUpUpdateComponent,
+        resolve: {
+          user: UserResolve
+        }
+      },
     ]
   },
   { path: 'menus', canActivate: [AuthGuard],
@@ -77,16 +88,23 @@ const routes: Routes = [
         component: MenuNewComponent
       },
       {
-        path: 'add',
-        component: MenuAddComponent
-      },
-      {
         path: ':menuNo/edit',
         component: MenuEditComponent,
         resolve: {
           menu: MenuResolve
         }
       },
+      {
+        path: 'add',
+        component: MenuAddComponent
+      },
+      {
+        path: ':menuNo/update',
+        component: MenuUpdateComponent,
+        resolve: {
+          menu: MenuResolve
+        }
+      }
     ]
   },
   { path: 'orders', canActivate: [AuthGuard],
@@ -110,10 +128,6 @@ const routes: Routes = [
       {
         path: '',
         component: StoresIndexComponent
-      },
-      {
-        path: ':username',
-        component: StoresComponent,
       },
     ]
   },

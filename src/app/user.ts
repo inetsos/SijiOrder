@@ -7,6 +7,9 @@ export interface User {
     storeName: string;
     phone: string;
     email: string;
+    roadAddr: string;
+    jibunAddr: string;
+    detailAddr: string;
     createdAt: string;
     confirmPasswordation: string;
     currentPassword: string;

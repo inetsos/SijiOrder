@@ -79,8 +79,10 @@ export class MenuNewComponent implements OnInit {
         this.router.navigate(['/menus']);
       })
       .catch(response => {
+        // alert(response);
         this.errorResponse = response;
-        this.utilService.handleFormSubmitError(this.errorResponse, this.form, this.formErrors);
+        alert(this.errorResponse.message);
+        // this.utilService.handleFormSubmitError(this.errorResponse, this.form, this.formErrors);
       });
     }
   }

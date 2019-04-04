@@ -2,8 +2,8 @@
 
   <h4 *ngIf="authService.isLoggedIn()"><b>{{user.storeName}}</b></h4>
 
-  <div align="right" class="buttons">
-    <a class="btn btn-default" href="/menus/new">메뉴등록</a>
+  <div class="text-right" class="buttons">
+    <!-- <a class="btn btn-default" href="/menus/new">메뉴등록</a> -->
     <a class="btn btn-default" href="/menus/add">메뉴추가</a>
   </div>
   <table class="table table-striped menus" border="0">
@@ -11,22 +11,36 @@
       <tr>
         <th style="width:10%" class="text-center">번호</th>
         <th style="width:20%" class="text-center">분류</th>
-        <th style="width:20%" class="text-center">메뉴이름</th>
-        <th style="width:15%" class="text-center">가격</th>
-        <th style="width:35%" class="text-center">설명</th>
+        <th style="width:40%" class="text-center">메뉴이름</th>
+        <th style="width:20%" class="text-center">가격</th>
+        <th style="width:10%" class="text-center">사진</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngIf="menus.length == 0">
         <td class="noData" colspan="4">등록된 메뉴가 없습니다.</td>
       </tr>
-      <tr *ngFor="let menu of menus">
-        <td align="center">{{menu.menuNo}}</td>
-        <td align="center">{{menu.classify}}</td>
-        <td><a [routerLink]="['/', 'menus', menu.menuNo, 'edit']">{{menu.name}}</a></td>
-        <td align="right">{{menu.price | number}}</td>
-        <td>{{menu.description}}</td>
-      </tr>
+      <ng-container *ngFor="let menu of menus">
+      <tr >
+        <td class="text-center">{{menu.menuNo}}</td>
+        <td class="text-center">{{menu.classify}}</td>
+        <td><a [routerLink]="['/', 'menus', menu.menuNo, 'update']">{{menu.name}}</a></td>
+        <td class="text-right">{{menu.price | number}}</td>
+        <td><input  type="checkbox" [(ngModel)]="menu.image" (ngModelChange)="changeImageStatus(menu)"/></td>
+      </tr>      
+      <ng-container *ngFor="let premium of menu.premia">
+        <tr>
+          <td class="text-center"></td>
+          <td class="text-center"></td>
+          <td>{{premium.size}}</td>
+          <td class="text-right">{{premium.premium_price | number}}</td>          
+        </tr>
+      </ng-container>
+      <tr *ngIf="menu.description !== ''">
+          <td></td>
+          <td colspan="4">{{menu.description}}</td>
+        </tr>
+    </ng-container>
     </tbody>
   </table>
 </div>

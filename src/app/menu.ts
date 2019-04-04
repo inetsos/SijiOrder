@@ -6,10 +6,10 @@ export interface Menu {
     price: number;
     description: string;
     username: string;
-    premium: Premium[];
+    premia: Premium[];
 }
 
 export interface Premium {
     size: string;
-    price: number;
+    premium_price: number;
 }

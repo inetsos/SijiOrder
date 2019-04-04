@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit {
   submit() {
     this.utilService.makeFormDirtyAndUpdateErrors(this.form, this.formErrors, this.formErrorMessages);
     if (this.form.valid) {
-      this.authService.login(this.form.value.username, this.form.value.password)
+      this.authService.login(this.form.value.username, this.form.value.password, '가맹점')
       .then(data => {
         this.router.navigate([this.redirectTo ? this.redirectTo : '/']);
       })

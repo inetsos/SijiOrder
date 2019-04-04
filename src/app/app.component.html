@@ -29,11 +29,18 @@
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li *ngIf="!authService.isLoggedIn()" [routerLinkActive]="['active']">
+              <a [routerLink]="['/','users','signup']">회원등록</a>
+            </li>          
+            <li *ngIf="authService.isLoggedIn() && authService.isStore()" [routerLinkActive]="['active']">
+                <a [routerLink]="['/','users', authService.getCurrentUser().username, 'update']">회원정보수정</a>
+            </li>
+
+            <!-- <li *ngIf="!authService.isLoggedIn()" [routerLinkActive]="['active']">
               <a [routerLink]="['/','users', 'store']">가맹점등록</a>
             </li>
             <li *ngIf="authService.isLoggedIn() && authService.isStore()" [routerLinkActive]="['active']">
                 <a [routerLink]="['/','users', authService.getCurrentUser().username, 'edit']">가맹점정보</a>
-            </li>  
+            </li>   -->
             <!-- <li *ngIf="!authService.isLoggedIn()" [routerLinkActive]="['active']">
               <a [routerLink]="['/','users','new']">회원등록</a>
             </li>            

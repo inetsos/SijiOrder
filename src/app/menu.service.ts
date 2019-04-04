@@ -60,7 +60,8 @@ export class MenuService {
 
   create(username: string, menu: Menu): Promise<Menu> {
     // 여기서... 메뉴에 사용자 코드를 추가하자.
-    menu.username = username;
+    // menu.username = username;
+    console.log(menu);
     return this.http.post<ApiResponse>(`${this.apiBaseUrl}`, menu)
               .toPromise()
               .then(this.utilService.checkSuccess)
